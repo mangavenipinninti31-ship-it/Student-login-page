@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; box-sizing: border-box; }
-    body { background: #1a1a1a; color: white; font-family: Arial; }
-   .navbar {
+    body {
+      background: #1a1a1a;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+  .navbar {
       background: #2d2d2d;
       padding: 12px 15px;
       display: flex;
@@ -14,8 +18,12 @@
       align-items: center;
       border-bottom: 2px solid #4a69bd;
     }
-   .logo { font-weight: bold; color: #4a69bd; font-size: 18px; }
-   .logout {
+  .logo {
+      font-weight: bold;
+      color: #4a69bd;
+      font-size: 18px;
+    }
+  .logout {
       background: #e55039;
       color: white;
       border: none;
@@ -23,21 +31,22 @@
       border-radius: 5px;
       cursor: pointer;
     }
-   .tabs {
+  .tabs {
       display: flex;
       background: #252525;
       border-bottom: 1px solid #444;
     }
-   .tab {
+  .tab {
       padding: 12px 20px;
       cursor: pointer;
       border-bottom: 3px solid transparent;
+      user-select: none;
     }
-   .tab.active {
+  .tab.active {
       border-bottom: 3px solid #4a69bd;
       color: #4a69bd;
     }
-   .editor {
+  .editor {
       display: none;
       width: 100%;
       height: 250px;
@@ -45,19 +54,21 @@
       color: #d4d4d4;
       border: none;
       padding: 15px;
-      font-family: monospace;
+      font-family: 'Courier New', monospace;
       font-size: 14px;
       resize: none;
+      outline: none;
     }
-   .editor.active { display: block; }
-   .output-bar {
+  .editor.active { display: block; }
+  .output-bar {
       background: #252525;
       padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-top: 1px solid #444;
     }
-   .run-btn {
+  .run-btn {
       background: #26de81;
       color: black;
       border: none;
@@ -98,33 +109,55 @@
   <iframe id="output"></iframe>
 
   <script>
-    // Tab switching code
+    // Page load ayyagane save chesina code load chey
+    window.onload = function() {
+      document.getElementById('html').value = localStorage.getItem('mangaveni_html') || '<h1>Hi Mangaveni 💚</h1>\n<p>Code raasi Run kottu!</p>';
+      document.getElementById('css').value = localStorage.getItem('mangaveni_css') || 'h1 { color: #4a69bd; text-align: center; }\np { text-align: center; color: #333; }';
+      document.getElementById('js').value = localStorage.getItem('mangaveni_js') || 'console.log("Welcome Mangaveni!");';
+      runCode(); // First load lo ne output chupinchu
+    }
+
+    // Tab switching
     function openTab(tabName) {
-      // Hide all editors
       let editors = document.getElementsByClassName('editor');
       for(let i = 0; i < editors.length; i++) {
         editors[i].classList.remove('active');
       }
-      // Remove active from all tabs
       let tabs = document.getElementsByClassName('tab');
       for(let i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove('active');
       }
-      // Show selected editor + tab
       document.getElementById(tabName).classList.add('active');
       event.currentTarget.classList.add('active');
     }
 
-    // Run code function
+    // Run + Auto Save
     function runCode() {
       let html = document.getElementById('html').value;
       let css = document.getElementById('css').value;
       let js = document.getElementById('js').value;
 
+      // LocalStorage lo save - ippudu refresh chesina povadu
+      localStorage.setItem('mangaveni_html', html);
+      localStorage.setItem('mangaveni_css', css);
+      localStorage.setItem('mangaveni_js', js);
+
       let output = document.getElementById('output');
-      output.contentDocument.body.innerHTML = html + '<style>' + css + '</style>';
-      output.contentWindow.eval(js);
+      output.contentDocument.open();
+      output.contentDocument.write(html + '<style>' + css + '</style><script>' + js + '<\/script>');
+      output.contentDocument.close();
     }
+
+    // Type chestunappude auto-save
+    document.getElementById('html').addEventListener('input', () => {
+      localStorage.setItem('mangaveni_html', document.getElementById('html').value);
+    });
+    document.getElementById('css').addEventListener('input', () => {
+      localStorage.setItem('mangaveni_css', document.getElementById('css').value);
+    });
+    document.getElementById('js').addEventListener('input', () => {
+      localStorage.setItem('mangaveni_js', document.getElementById('js').value);
+    });
   </script>
 </body>
 </html>
