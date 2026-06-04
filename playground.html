@@ -6,7 +6,7 @@
   <style>
     * { margin: 0; box-sizing: border-box; }
     body { background: #1a1a1a; color: white; font-family: Arial; }
-    .navbar {
+   .navbar {
       background: #2d2d2d;
       padding: 12px 15px;
       display: flex;
@@ -14,58 +14,63 @@
       align-items: center;
       border-bottom: 2px solid #4a69bd;
     }
-    .logo { font-weight: bold; color: #4a69bd; }
-    .logout {
+   .logo { font-weight: bold; color: #4a69bd; font-size: 18px; }
+   .logout {
       background: #e55039;
       color: white;
       border: none;
       padding: 8px 15px;
       border-radius: 5px;
+      cursor: pointer;
     }
-    .tabs {
+   .tabs {
       display: flex;
       background: #252525;
       border-bottom: 1px solid #444;
     }
-    .tab {
+   .tab {
       padding: 12px 20px;
       cursor: pointer;
       border-bottom: 3px solid transparent;
     }
-    .tab.active { border-bottom: 3px solid #4a69bd; color: #4a69bd; }
-    .editor {
+   .tab.active {
+      border-bottom: 3px solid #4a69bd;
+      color: #4a69bd;
+    }
+   .editor {
+      display: none;
       width: 100%;
-      height: 200px;
+      height: 250px;
       background: #1e1e1e;
       color: #d4d4d4;
       border: none;
       padding: 15px;
       font-family: monospace;
       font-size: 14px;
-      display: none;
+      resize: none;
     }
-    .editor.active { display: block; }
-    .output-header {
+   .editor.active { display: block; }
+   .output-bar {
       background: #252525;
       padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid #4a69bd;
     }
-    .run-btn {
+   .run-btn {
       background: #26de81;
       color: black;
       border: none;
-      padding: 8px 15px;
+      padding: 8px 20px;
       border-radius: 5px;
       font-weight: bold;
+      cursor: pointer;
     }
-    iframe {
+    #output {
       width: 100%;
       height: 300px;
-      border: none;
       background: white;
+      border: none;
     }
   </style>
 </head>
@@ -76,43 +81,50 @@
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="showTab('html')">HTML</div>
-    <div class="tab" onclick="showTab('css')">CSS</div>
-    <div class="tab" onclick="showTab('js')">JS</div>
+    <div class="tab active" onclick="openTab('html')">HTML</div>
+    <div class="tab" onclick="openTab('css')">CSS</div>
+    <div class="tab" onclick="openTab('js')">JS</div>
   </div>
 
-  <textarea id="html" class="editor active" placeholder="HTML code..."><h1>Hello Mangaveni 💚</h1>
-<button onclick="sayHi()">Click Me</button></textarea>
-  
-  <textarea id="css" class="editor" placeholder="CSS code...">body {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Arial;
-}
-h1 { color: white; }
-button {
-  padding: 12px 25px;
-  background: #4a69bd;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  margin-left: 10px;
-}</textarea>
-  
-  <textarea id="js" class="editor" placeholder="JS code...">function sayHi() {
-  alert('Hi Mangaveni! You clicked me 💚');
-}</textarea>
+  <textarea id="html" class="editor active" placeholder="HTML code..."></textarea>
+  <textarea id="css" class="editor" placeholder="CSS code..."></textarea>
+  <textarea id="js" class="editor" placeholder="JS code..."></textarea>
 
-  <div class="output-header">
+  <div class="output-bar">
     <span>📺 Live Output</span>
     <button class="run-btn" onclick="runCode()">▶ Run</button>
   </div>
-  
+
   <iframe id="output"></iframe>
 
   <script>
-    function showTab(type) {
-      document.querySelectorAll('.tab').forEach
+    // Tab switching code
+    function openTab(tabName) {
+      // Hide all editors
+      let editors = document.getElementsByClassName('editor');
+      for(let i = 0; i < editors.length; i++) {
+        editors[i].classList.remove('active');
+      }
+      // Remove active from all tabs
+      let tabs = document.getElementsByClassName('tab');
+      for(let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+      // Show selected editor + tab
+      document.getElementById(tabName).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    // Run code function
+    function runCode() {
+      let html = document.getElementById('html').value;
+      let css = document.getElementById('css').value;
+      let js = document.getElementById('js').value;
+
+      let output = document.getElementById('output');
+      output.contentDocument.body.innerHTML = html + '<style>' + css + '</style>';
+      output.contentWindow.eval(js);
+    }
+  </script>
+</body>
+</html>
