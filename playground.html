@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; box-sizing: border-box; }
-    body {
-      background: #1a1a1a;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
+    body { background: #1a1a1a; color: white; font-family: Arial; }
   .navbar {
       background: #2d2d2d;
       padding: 12px 15px;
@@ -18,11 +14,7 @@
       align-items: center;
       border-bottom: 2px solid #4a69bd;
     }
-  .logo {
-      font-weight: bold;
-      color: #4a69bd;
-      font-size: 18px;
-    }
+  .logo { font-weight: bold; color: #4a69bd; font-size: 18px; }
   .logout {
       background: #e55039;
       color: white;
@@ -40,7 +32,6 @@
       padding: 12px 20px;
       cursor: pointer;
       border-bottom: 3px solid transparent;
-      user-select: none;
     }
   .tab.active {
       border-bottom: 3px solid #4a69bd;
@@ -54,7 +45,7 @@
       color: #d4d4d4;
       border: none;
       padding: 15px;
-      font-family: 'Courier New', monospace;
+      font-family: monospace;
       font-size: 14px;
       resize: none;
       outline: none;
@@ -66,7 +57,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid #444;
     }
   .run-btn {
       background: #26de81;
@@ -79,7 +69,7 @@
     }
     #output {
       width: 100%;
-      height: 300px;
+      height: calc(100vh - 420px);
       background: white;
       border: none;
     }
@@ -102,61 +92,49 @@
   <textarea id="js" class="editor" placeholder="JS code..."></textarea>
 
   <div class="output-bar">
-    <span>📺 Live Output</span>
+    <span>📺 Live Output - Auto Saved 💚</span>
     <button class="run-btn" onclick="runCode()">▶ Run</button>
   </div>
 
   <iframe id="output"></iframe>
 
   <script>
-    // Page load ayyagane save chesina code load chey
-    window.onload = function() {
-      document.getElementById('html').value = localStorage.getItem('mangaveni_html') || '<h1>Hi Mangaveni 💚</h1>\n<p>Code raasi Run kottu!</p>';
-      document.getElementById('css').value = localStorage.getItem('mangaveni_css') || 'h1 { color: #4a69bd; text-align: center; }\np { text-align: center; color: #333; }';
+    // 1. Page load avagane localStorage nunchi code teesuko
+    window.addEventListener('load', function() {
+      document.getElementById('html').value = localStorage.getItem('mangaveni_html') || '<h1>Hi Mangaveni 💚</h1>\n<p>Nee code safe ga untundi!</p>';
+      document.getElementById('css').value = localStorage.getItem('mangaveni_css') || 'body { background: #f0f0f0; }\nh1 { color: #4a69bd; text-align: center; }\np { text-align: center; }';
       document.getElementById('js').value = localStorage.getItem('mangaveni_js') || 'console.log("Welcome Mangaveni!");';
-      runCode(); // First load lo ne output chupinchu
-    }
+      runCode();
+    });
 
-    // Tab switching
+    // 2. Tab switching
     function openTab(tabName) {
-      let editors = document.getElementsByClassName('editor');
-      for(let i = 0; i < editors.length; i++) {
-        editors[i].classList.remove('active');
-      }
-      let tabs = document.getElementsByClassName('tab');
-      for(let i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove('active');
-      }
+      document.querySelectorAll('.editor').forEach(ed => ed.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(tb => tb.classList.remove('active'));
       document.getElementById(tabName).classList.add('active');
       event.currentTarget.classList.add('active');
     }
 
-    // Run + Auto Save
+    // 3. Run + Save function
     function runCode() {
       let html = document.getElementById('html').value;
       let css = document.getElementById('css').value;
       let js = document.getElementById('js').value;
 
-      // LocalStorage lo save - ippudu refresh chesina povadu
+      // IMPORTANT: localStorage lo save chey
       localStorage.setItem('mangaveni_html', html);
       localStorage.setItem('mangaveni_css', css);
       localStorage.setItem('mangaveni_js', js);
 
       let output = document.getElementById('output');
-      output.contentDocument.open();
-      output.contentDocument.write(html + '<style>' + css + '</style><script>' + js + '<\/script>');
-      output.contentDocument.close();
+      output.srcdoc = html + '<style>' + css + '</style><script>' + js + '<\/script>';
     }
 
-    // Type chestunappude auto-save
-    document.getElementById('html').addEventListener('input', () => {
-      localStorage.setItem('mangaveni_html', document.getElementById('html').value);
-    });
-    document.getElementById('css').addEventListener('input', () => {
-      localStorage.setItem('mangaveni_css', document.getElementById('css').value);
-    });
-    document.getElementById('js').addEventListener('input', () => {
-      localStorage.setItem('mangaveni_js', document.getElementById('js').value);
+    // 4. Auto-save on typing
+    ['html', 'css', 'js'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        localStorage.setItem('mangaveni_' + id, document.getElementById(id).value);
+      });
     });
   </script>
 </body>
