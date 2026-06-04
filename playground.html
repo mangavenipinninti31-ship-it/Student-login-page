@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vyshnavi 💚 | Web Playground</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body { background: #1a1a1a; color: white; font-family: Arial; }
+    .navbar {
+      background: #2d2d2d;
+      padding: 12px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #4a69bd;
+    }
+    .logo { font-weight: bold; color: #4a69bd; }
+    .logout {
+      background: #e55039;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+    }
+    .tabs {
+      display: flex;
+      background: #252525;
+      border-bottom: 1px solid #444;
+    }
+    .tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    .tab.active { border-bottom: 3px solid #4a69bd; color: #4a69bd; }
+    .editor {
+      width: 100%;
+      height: 200px;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border: none;
+      padding: 15px;
+      font-family: monospace;
+      font-size: 14px;
+      display: none;
+    }
+    .editor.active { display: block; }
+    .output-header {
+      background: #252525;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #4a69bd;
+    }
+    .run-btn {
+      background: #26de81;
+      color: black;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">Vyshnavi 💚 | Web Playground</div>
+    <button class="logout" onclick="location.href='index.html'">Logout</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('html')">HTML</div>
+    <div class="tab" onclick="showTab('css')">CSS</div>
+    <div class="tab" onclick="showTab('js')">JS</div>
+  </div>
+
+  <textarea id="html" class="editor active" placeholder="HTML code..."><h1>Hello Mangaveni 💚</h1>
+<button onclick="sayHi()">Click Me</button></textarea>
+  
+  <textarea id="css" class="editor" placeholder="CSS code...">body {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+}
+h1 { color: white; }
+button {
+  padding: 12px 25px;
+  background: #4a69bd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-left: 10px;
+}</textarea>
+  
+  <textarea id="js" class="editor" placeholder="JS code...">function sayHi() {
+  alert('Hi Mangaveni! You clicked me 💚');
+}</textarea>
+
+  <div class="output-header">
+    <span>📺 Live Output</span>
+    <button class="run-btn" onclick="runCode()">▶ Run</button>
+  </div>
+  
+  <iframe id="output"></iframe>
+
+  <script>
+    function showTab(type) {
+      document.querySelectorAll('.tab').forEach
