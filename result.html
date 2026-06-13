@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results - SDMSMK</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; }
+    .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
+    .navbar h1 { font-size: 1.8rem; }
+    .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+    .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .card h2 { color: #667eea; margin-bottom: 30px; font-size: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+    .edit-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
+      padding: 10px 20px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
+    }
+    .edit-btn:hover { transform: scale(1.05); }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #f8f9fa; color: #667eea; font-weight: 700; }
+    td input {
+      width: 100%; padding: 8px; border: 2px solid #667eea; border-radius: 6px;
+      font-size: 1rem; text-align: center; display: none;
+    }
+    .total-row { background: #f0f2f5; font-weight: 700; font-size: 1.1rem; }
+    .total-row td { color: #667eea; }
+    .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+    .back-btn,.save-btn {
+      flex: 1; min-width: 200px; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem;
+      font-weight: 600; cursor: pointer; border: none;
+    }
+    .back-btn { background: #6c757d; color: white; }
+    .save-btn { background: linear-gradient(135deg, #56ab2f, #a8e063); color: white; display: none; }
+    .success-msg {
+      background: #d4edda; color: #155724; padding: 15px; border-radius: 10px;
+      text-align: center; margin-bottom: 20px; display: none; font-weight: 600;
+    }
+    .grade-a { color: #28a745; font-weight: 700; }
+    .grade-b { color: #17a2b8; font-weight: 700; }
+    .grade-c { color: #ffc107; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="navbar"><h1>📝 Exam Results</h1></div>
+  <div class="container">
+    <div class="card">
+      <div class="success-msg" id="successMsg">✅ Results Updated Successfully!</div>
+      <h2>
+        Semester Results
+        <button class="edit-btn" onclick="toggleEdit()" id="editBtn">✏️ Edit Marks</button>
+      </h2>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <!-- Dynamic ga vastayi -->
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td>Total / Percentage</td>
+            <td id="totalMarks">-</td>
+            <td id="totalGrade">-</td>
+          </tr>
+        </tfoot>
+      </table>
+      
+      <div class="btn-group">
+        <button class="back-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+        <button class="save-btn" onclick="saveResults()" id="saveBtn">💾 Save Results</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEditing = false;
+    let subjects = ['Telugu', 'English', 'Mathematics', 'Physics', 'Chemistry', 'Computer Science'];
+    
+    function loadResults() {
+      let tbody = document.getElementById('resultsBody');
+      tbody.innerHTML = '';
+      let total = 0;
+      
+      subjects.forEach((sub, i) => {
+        let marks = localStorage.getItem('marks_' + i) || '0';
+        total += parseInt(marks);
+        let grade = getGrade(parseInt(marks));
+        
+        tbody.innerHTML += `
+          <tr>
+            <td>${sub}</td>
+            <td>
+              <span id="m${i}">${marks}</span>
+              <input type="number" id="e${i}" min="0" max="100" value="${marks}">
+            </td>
+            <td id="g${i}" class="${grade.class}">${grade.text}</td>
+          </tr>
+        `;
+      });
+      
+      let percent = (total / (subjects.length * 100) * 100).toFixed(2);
+      document.getElementById('totalMarks').innerText = `${total}/${subjects.length * 100} (${percent}%)`;
+      document.getElementById('totalGrade').innerText = getGrade(percent).text;
+      document.getElementById('totalGrade').className = getGrade(percent).class;
+    }
+    
+    function getGrade(marks) {
+      if(marks >= 90) return {text: 'A+', class: 'grade-a'};
+      if(marks >= 80) return {text: 'A', class: 'grade-a'};
+      if(marks >= 70) return {text: 'B+', class: 'grade-b'};
+      if(marks >= 60) return {text: 'B', class: 'grade-b'};
+      if(marks >= 50) return {text: 'C', class: 'grade-c'};
+      return {text: 'F', class: 'grade-c'};
+    }
+    
+    function toggleEdit() {
+      isEditing = !isEditing;
+      
+      if(isEditing) {
+        document.getElementById('editBtn').innerText = '❌ Cancel';
+        document.getElementById('saveBtn').style.display = 'block';
+        
+        subjects.forEach((sub, i) => {
+          document.getElementById('m' + i).style.display = 'none';
+          document.getElementById('e' + i).style.display = 'block';
+        });
+      } else {
+        document.getElementById('editBtn').innerText = '✏️ Edit Marks';
+        document.getElementById('saveBtn').style.display = 'none';
+        
+        subjects.forEach((sub, i) => {
+          document.getElementById('m' + i).style.display = 'block';
+          document.getElementById('e' + i).style.display = 'none';
+        });
+      }
+    }
+    
+    function saveResults() {
+      subjects.forEach((sub, i) => {
+        let marks = document.getElementById('e' + i).value;
+        localStorage.setItem('marks_' + i, marks);
+      });
+      
+      loadResults();
+      toggleEdit();
+      
+      let msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 3000);
+    }
+    
+    // Default marks set cheyi - first time kosam
+    if(!localStorage.getItem('marks_0')) {
+      localStorage.setItem('marks_0', '85');
+      localStorage.setItem('marks_1', '78');
+      localStorage.setItem('marks_2', '92');
+      localStorage.setItem('marks_3', '88');
+      localStorage.setItem('marks_4', '76');
+      localStorage.setItem('marks_5', '95');
+    }
+    
+    window.onload = loadResults;
+  </script>
+</body>
+</html>
