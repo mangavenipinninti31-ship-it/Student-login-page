@@ -60,9 +60,7 @@
             <th>Grade</th>
           </tr>
         </thead>
-        <tbody id="resultsBody">
-          <!-- Dynamic ga vastayi -->
-        </tbody>
+        <tbody id="resultsBody"></tbody>
         <tfoot>
           <tr class="total-row">
             <td>Total / Percentage</td>
@@ -156,7 +154,6 @@
       setTimeout(() => { msg.style.display = 'none'; }, 3000);
     }
     
-    // Default marks set cheyi - first time kosam
     if(!localStorage.getItem('marks_0')) {
       localStorage.setItem('marks_0', '85');
       localStorage.setItem('marks_1', '78');
