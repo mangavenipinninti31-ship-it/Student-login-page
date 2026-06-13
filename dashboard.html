@@ -3,180 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SDMSMK - Student Dashboard</title>
+  <title>SDMSMK Student Portal - Dashboard</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5;
-      min-height: 100vh;
-    }
-    
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; }
  .navbar {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px 40px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
+      color: white; padding: 20px 40px; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
     }
-    
  .navbar h1 { font-size: 1.8rem; }
- .nav-right { display: flex; gap: 20px; align-items: center; }
-    #liveTime { font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; }
- .profile-pic {
-      width: 45px; height: 45px; border-radius: 50%; background: white;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; cursor: pointer; transition: 0.3s;
-    }
- .profile-pic:hover { transform: scale(1.1); }
-    
- .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
-    
+ .user-info { display: flex; align-items: center; gap: 15px; }
+ .user-info span { font-size: 1.1rem; }
+ .avatar { width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+ .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
  .welcome-banner {
-      background: white; padding: 30px; border-radius: 20px;
-      margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background: white; padding: 25px 30px; border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;
     }
- .welcome-banner h2 { color: #333; font-size: 2rem; margin-bottom: 10px; }
+ .welcome-banner h2 { color: #333; font-size: 1.8rem; margin-bottom: 5px; }
  .welcome-banner p { color: #666; font-size: 1.1rem; }
-    
- .cards-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px; margin-bottom: 30px;
-    }
-    
+ .welcome-banner strong { color: #667eea; }
+ .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
  .card {
-      background: white; border-radius: 20px; padding: 35px 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.3s;
-      cursor: pointer; position: relative; overflow: hidden;
+      background: white; padding: 30px; border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
     }
- .card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
- .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; }
- .card-green::before { background: linear-gradient(90deg, #56ab2f, #a8e063); }
- .card-blue::before { background: linear-gradient(90deg, #4facfe, #00f2fe); }
- .card-orange::before { background: linear-gradient(90deg, #fa709a, #fee140); }
- .card-purple::before { background: linear-gradient(90deg, #667eea, #764ba2); }
-    
- .card-icon { font-size: 3.5rem; margin-bottom: 20px; }
- .card h3 { color: #555; font-size: 1.2rem; margin-bottom: 15px; font-weight: 600; }
- .card-value { font-size: 3rem; font-weight: 700; color: #333; margin-bottom: 15px; }
- .card-status { font-size: 1rem; font-weight: 600; padding: 6px 15px; border-radius: 20px; display: inline-block; }
- .status-safe { background: #d4edda; color: #155724; }
+ .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15); }
+ .card-icon { font-size: 3rem; margin-bottom: 15px; }
+ .card h3 { color: #333; font-size: 1.4rem; margin-bottom: 10px; }
+ .card p { color: #666; font-size: 1rem; margin-bottom: 15px; }
+ .card-status {
+      display: inline-block; padding: 8px 15px; border-radius: 20px;
+      font-size: 0.9rem; font-weight: 600;
+    }
+ .status-success { background: #d4edda; color: #155724; }
  .status-warning { background: #fff3cd; color: #856404; }
  .status-danger { background: #f8d7da; color: #721c24; }
-    
  .progress-bar {
       width: 100%; height: 10px; background: #e0e0e0;
       border-radius: 10px; overflow: hidden; margin-top: 10px;
     }
- .progress-fill {
-      height: 100%; background: linear-gradient(90deg, #56ab2f, #a8e063);
-      transition: width 1s ease; border-radius: 10px;
+ .progress-fill { height: 100%; background: linear-gradient(90deg, #56ab2f, #a8e063); transition: width 0.5s ease; }
+ .logout-btn {
+      margin-top: 30px; padding: 15px 30px; background: #6c757d; color: white;
+      border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600;
+      cursor: pointer; transition: 0.3s;
     }
-    
- .quick-actions {
-      background: white; padding: 30px; border-radius: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
- .quick-actions h3 { color: #333; margin-bottom: 20px; font-size: 1.5rem; }
- .action-buttons {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
-    }
- .action-btn {
-      padding: 18px 25px; border: none; border-radius: 12px; font-size: 1.1rem;
-      font-weight: 600; cursor: pointer; transition: all 0.3s; color: white;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
- .btn-profile { background: linear-gradient(135deg, #667eea, #764ba2); }
- .btn-attendance { background: linear-gradient(135deg, #f093fb, #f5576c); }
- .btn-marks { background: linear-gradient(135deg, #4facfe, #00f2fe); }
- .btn-fees { background: linear-gradient(135deg, #fa709a, #fee140); }
- .btn-settings { background: linear-gradient(135deg, #30cfd0, #330867); }
- .btn-logout { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
- .action-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-    
-    @media (min-width: 1200px) {
-   .navbar { padding: 25px 60px; }
-   .navbar h1 { font-size: 2.2rem; }
-   .container { padding: 40px; }
-   .cards-grid { grid-template-columns: repeat(4, 1fr); }
-   .card { padding: 45px 35px; }
-   .card-value { font-size: 3.5rem; }
-    }
-    
+ .logout-btn:hover { background: #5a6268; transform: scale(1.02); }
+ .time { font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px; }
     @media (max-width: 768px) {
-   .navbar { padding: 15px 20px; }
-   .navbar h1 { font-size: 1.4rem; }
-   .cards-grid { grid-template-columns: 1fr; }
-   .welcome-banner h2 { font-size: 1.5rem; }
-     #liveTime { font-size: 0.85rem; padding: 6px 12px; }
+ .navbar h1 { font-size: 1.4rem; }
+ .welcome-banner h2 { font-size: 1.4rem; }
+ .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="navbar">
     <h1>🎓 SDMSMK Student Portal</h1>
-    <div class="nav-right">
-      <span id="liveTime"></span>
-      <span id="studentName">Hi, Mangaveni</span>
-      <div class="profile-pic" onclick="checkPage('profile.html')">👤</div>
+    <div class="user-info">
+      <span class="time" id="liveTime">🕐 Loading...</span>
+      <span id="studentName">Hi, Student</span>
+      <div class="avatar">👤</div>
     </div>
   </div>
 
   <div class="container">
     <div class="welcome-banner">
-      <h2>Welcome back, <span id="nameBanner">Mangaveni Pinninti</span>! 👋</h2>
-      <p>Roll No: <strong id="rollNo">22A91A0505</strong> | Branch: <strong>CSE</strong> | Sem: <strong>3-1</strong></p>
+      <h2>Welcome back, <span id="nameBanner">Student</span>! 👋</h2>
+      <p id="branchSem">Roll No: <strong id="rollNo">-</strong> | Course: <strong>B.Sc</strong> | Year: <strong>1st Year</strong></p>
     </div>
 
-    <div class="cards-grid">
-      <div class="card card-green" onclick="checkPage('attendance.html')">
+    <div class="grid">
+      <div class="card" onclick="checkPage('profile.html')">
+        <div class="card-icon">👤</div>
+        <h3>My Profile</h3>
+        <p>View and edit your personal details</p>
+        <span class="card-status status-success">Active ✓</span>
+      </div>
+
+      <div class="card" onclick="checkPage('attendance.html')">
         <div class="card-icon">📊</div>
         <h3>Attendance</h3>
-        <div class="card-value" id="attendanceVal">85.5%</div>
+        <p>Track your attendance percentage</p>
         <div class="progress-bar">
-          <div class="progress-fill" id="attProgress" style="width: 0%"></div>
+          <div class="progress-fill" id="attProgress" style="width: 85.5%;"></div>
         </div>
-        <span class="card-status status-safe" id="attendanceStatus" style="margin-top: 10px;">You are Safe ✅</span>
+        <span class="card-status status-success" id="attendanceStatus"><span id="attendanceVal">85.5%</span> - Good 👍</span>
       </div>
 
-      <div class="card card-blue" onclick="checkPage('marks.html')">
-        <div class="card-icon">📚</div>
-        <h3>Total Courses</h3>
-        <div class="card-value">5</div>
-        <span class="card-status status-safe">Current Semester</span>
+      <div class="card" onclick="checkPage('results.html')">
+        <div class="card-icon">📝</div>
+        <h3>Results</h3>
+        <p>Check your exam results and grades</p>
+        <span class="card-status status-success">Updated ✓</span>
       </div>
 
-      <div class="card card-orange" onclick="checkPage('fees.html')">
-        <div class="card-icon">💰</div>
-        <h3>Pending Fees</h3>
-        <div class="card-value" id="feesVal">₹0</div>
-        <span class="card-status status-safe" id="feesStatus">All Clear ✅</span>
-      </div>
-
-      <div class="card card-purple" onclick="checkPage('marks.html')">
-        <div class="card-icon">🎯</div>
-        <h3>CGPA</h3>
-        <div class="card-value">8.75</div>
-        <span class="card-status status-safe">Excellent</span>
+      <div class="card" onclick="checkPage('payments.html')">
+        <div class="card-icon">💳</div>
+        <h3>Fee Payments</h3>
+        <p>Pay fees and view payment history</p>
+        <span class="card-status status-warning">Pending ⚠️</span>
       </div>
     </div>
 
-    <div class="quick-actions">
-      <h3>⚡ Quick Actions</h3>
-      <div class="action-buttons">
-        <button class="action-btn btn-profile" onclick="checkPage('profile.html')">👤 My Profile</button>
-        <button class="action-btn btn-attendance" onclick="checkPage('attendance.html')">📊 View Attendance</button>
-        <button class="action-btn btn-marks" onclick="checkPage('marks.html')">📝 Check Results</button>
-        <button class="action-btn btn-fees" onclick="checkPage('fees.html')">💰 Fee Payment</button>
-        <button class="action-btn btn-settings" onclick="checkPage('settings.html')">⚙️ Settings</button>
-        <button class="action-btn btn-logout" onclick="logout()">🚪 Logout</button>
-      </div>
-    </div>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
   </div>
 
   <script>
@@ -190,21 +123,21 @@
     setInterval(updateTime, 1000);
     updateTime();
     
-    // NEW: Load Data Function - Profile lo marchina ventane dashboard lo kuda update avthundi
+    // FIX: Load Dashboard Data - Profile lo marchina ventane update avthundi
     function loadDashboardData() {
       let name = localStorage.getItem('studentName') || 'Student';
       let roll = localStorage.getItem('studentRoll') || '-';
-      let branch = localStorage.getItem('studentBranch') || 'CSE';
-      let sem = localStorage.getItem('studentSem') || '3-1';
+      let branch = localStorage.getItem('studentBranch') || 'B.Sc';
+      let sem = localStorage.getItem('studentSem') || '1st Year';
       let attendance = parseFloat(localStorage.getItem('attendance')) || 85.5;
       
-      // Top Navbar
+      // Top Navbar - Hi, First Name
       document.getElementById('studentName').innerText = 'Hi, ' + name.split(' ')[0];
       
-      // Welcome Banner - FIX: Idi kuda update avthundi ippudu
+      // Welcome Banner - FIX: Course, Year ani marcham
       document.getElementById('nameBanner').innerText = name;
       document.getElementById('rollNo').innerText = roll;
-      document.getElementById('branchSem').innerText = `Roll No: ${roll} | Branch: ${branch} | Sem: ${sem}`;
+      document.getElementById('branchSem').innerHTML = `Roll No: <strong>${roll}</strong> | Course: <strong>${branch}</strong> | Year: <strong>${sem}</strong>`;
       
       // Attendance
       document.getElementById('attendanceVal').innerText = attendance + '%';
@@ -214,36 +147,38 @@
       let attStatus = document.getElementById('attendanceStatus');
       let progressFill = document.getElementById('attProgress');
       if(attendance < 75) {
-        attStatus.innerText = 'Warning - Shortage 🔴';
+        attStatus.innerText = attendance + '% - Warning 🔴';
         attStatus.className = 'card-status status-danger';
         progressFill.style.background = 'linear-gradient(90deg, #ff6b6b, #ee5a6f)';
       } else if(attendance < 85) {
-        attStatus.innerText = 'Maintain Carefully 🟡';
+        attStatus.innerText = attendance + '% - Maintain Carefully 🟡';
         attStatus.className = 'card-status status-warning';
         progressFill.style.background = 'linear-gradient(90deg, #fa709a, #fee140)';
+      } else {
+        attStatus.innerText = attendance + '% - Good 👍';
+        attStatus.className = 'card-status status-success';
+        progressFill.style.background = 'linear-gradient(90deg, #56ab2f, #a8e063)';
       }
     }
     
-    // Page load ayinappudu + prathi 1 second ki data check cheyi
+    // Page load ayinappudu + prathi 1 second ki data refresh
     window.onload = loadDashboardData;
-    setInterval(loadDashboardData, 1000); // NEW: Auto refresh - Profile lo marchina ventane kanipisthundi
+    setInterval(loadDashboardData, 1000); // Profile lo save chesina ventane kanipisthundi
     
-    // 404 RAKUNDA CHECK CHESE FUNCTION
     function checkPage(page) {
       fetch(page, { method: 'HEAD' })
-      .then(response => {
+     .then(response => {
           if (response.ok) {
             window.location.href = page;
           } else {
             alert(`⚠️ ${page} inka create cheyalevu Mangaveni!\n\nGitHub lo Add file → Create new file → ${page} ani petti code paste cheyi.`);
           }
         })
-      .catch(() => {
+     .catch(() => {
           alert(`⚠️ ${page} file kanipinchaledu!\n\nMunupu ee file create cheyi, taruvata button work avthundi.`);
         });
     }
     
-    // FIX: Logout to index.html
     function logout() {
       if(confirm("Are you sure you want to logout?")) {
         localStorage.clear();
@@ -251,7 +186,6 @@
       }
     }
     
-    // Login Check
     if(!localStorage.getItem('studentName')) {
       alert('Please login first!');
       window.location.href = 'index.html';
