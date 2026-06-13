@@ -43,12 +43,12 @@
   </style>
 </head>
 <body>
-  <div class="navbar"><h1>📝 Exam Results</h1></div>
+  <div class="navbar"><h1>📝 B.Sc AI - Semester Results</h1></div>
   <div class="container">
     <div class="card">
       <div class="success-msg" id="successMsg">✅ Results Updated Successfully!</div>
       <h2>
-        Semester Results
+        1st Year Results
         <button class="edit-btn" onclick="toggleEdit()" id="editBtn">✏️ Edit Marks</button>
       </h2>
       
@@ -79,7 +79,15 @@
 
   <script>
     let isEditing = false;
-    let subjects = ['Telugu', 'English', 'Mathematics', 'Physics', 'Chemistry', 'Computer Science'];
+    // B.Sc AI Subjects - 1st Year
+    let subjects = [
+      'Python Programming', 
+      'Mathematics for AI', 
+      'Statistics & Probability', 
+      'Fundamentals of AI', 
+      'English', 
+      'Second Language'
+    ];
     
     function loadResults() {
       let tbody = document.getElementById('resultsBody');
@@ -154,13 +162,14 @@
       setTimeout(() => { msg.style.display = 'none'; }, 3000);
     }
     
+    // First time khali ga start avthundi - sample marks levu
     if(!localStorage.getItem('marks_0')) {
-      localStorage.setItem('marks_0', '85');
-      localStorage.setItem('marks_1', '78');
-      localStorage.setItem('marks_2', '92');
-      localStorage.setItem('marks_3', '88');
-      localStorage.setItem('marks_4', '76');
-      localStorage.setItem('marks_5', '95');
+      localStorage.setItem('marks_0', '0');
+      localStorage.setItem('marks_1', '0');
+      localStorage.setItem('marks_2', '0');
+      localStorage.setItem('marks_3', '0');
+      localStorage.setItem('marks_4', '0');
+      localStorage.setItem('marks_5', '0');
     }
     
     window.onload = loadResults;
