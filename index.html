@@ -1,12 +1,122 @@
-<h3>Settings</h3>
-<button>Change Password</button>
-<button>Dark Mode Toggle</button>
-<button onclick="confirmLogout()">Logout</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDMSMK - Student Login</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+   .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+      max-width: 450px;
+      width: 100%;
+    }
+    h1 { text-align: center; color: #333; margin-bottom: 10px; font-size: 2rem; }
+   .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+   .input-group { margin-bottom: 20px; }
+    label { display: block; color: #555; margin-bottom: 8px; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    #error {
+      color: #f5576c;
+      text-align: center;
+      margin-top: 15px;
+      min-height: 20px;
+      font-weight: 600;
+    }
+    @media (min-width: 1024px) {
+     .login-box { padding: 60px; max-width: 500px; }
+      h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1>🎓 SDMSMK</h1>
+    <p class="subtitle">Student Login Portal</p>
+    
+    <div class="input-group">
+      <label>Student ID / Roll No</label>
+      <input type="text" id="studentId" placeholder="22A91A0505" required>
+    </div>
+    
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter password" required>
+    </div>
+    
+    <button onclick="login()">Login</button>
+    <p id="error"></p>
+  </div>
 
-<script>
-function confirmLogout() {
-  if(confirm("Are you sure you want to logout?")) {
-    location.href = "login.html";
-  }
-}
-</script>
+  <script>
+    function login() {
+      let id = document.getElementById('studentId').value.trim();
+      let pass = document.getElementById('password').value.trim();
+      let error = document.getElementById('error');
+      
+      if(!id ||!pass) {
+        error.innerText = '❌ Please fill all fields';
+        return;
+      }
+      
+      // Demo login - Project ki elanti ID password petti login avthundi
+      // Future: Backend connect cheyali
+      localStorage.setItem('studentName', 'Mangaveni Pinninti');
+      localStorage.setItem('studentRoll', id);
+      localStorage.setItem('attendance', '85.5');
+      
+      error.innerText = '✅ Login Successful!';
+      error.style.color = 'green';
+      
+      setTimeout(() => {
+        window.location.href = 'welcome.html';
+      }, 1000);
+    }
+    
+    // Enter key support
+    document.getElementById('password').addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') login();
+    });
+  </script>
+</body>
+</html>
