@@ -11,9 +11,7 @@
 .navbar h1 { font-size: 1.8rem; }
 .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
 .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    
 .page-title { color: #333; font-size: 2rem; margin-bottom: 25px; }
-    
 .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
 .course-card {
       background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px;
@@ -22,7 +20,6 @@
 .course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(102,126,234,0.3); }
 .course-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
 .course-card p { opacity: 0.9; font-size: 0.95rem; }
-    
 .sem-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
 .sem-table th { background: #333; color: white; padding: 15px; text-align: left; font-weight: 600; }
 .sem-table td { padding: 18px 15px; border-bottom: 1px solid #eee; }
@@ -32,7 +29,6 @@
       border-radius: 6px; font-weight: 600; cursor: pointer;
     }
 .click-btn:hover { background: #5568d3; }
-    
 .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
       background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
 .modal-content { background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; }
@@ -45,7 +41,6 @@
 .modal-btns button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
 .submit-btn { background: #667eea; color: white; }
 .cancel-btn { background: #6c757d; color: white; }
-    
     #resultSection, #semListSection { display: none; }
 .student-info {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
@@ -53,7 +48,6 @@
     }
 .student-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
 .student-info p { font-size: 1rem; opacity: 0.9; }
-    
 .result-header { color: #667eea; margin-bottom: 20px; font-size: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
 .edit-btn {
       background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
@@ -317,8 +311,11 @@
         return;
       }
       
-      // FIX: Roll number check properly chesam
-      if(resultsDB[currentBatch] && resultsDB[currentBatch][currentCourse] && resultsDB[currentBatch][currentCourse][currentSem] && resultsDB[currentBatch][currentCourse][currentSem][roll]) {
+      // FIX: Roll number check proper ga chesam
+      if(resultsDB[currentBatch] && 
+         resultsDB[currentBatch][currentCourse] && 
+         resultsDB[currentBatch][currentCourse][currentSem] && 
+         resultsDB[currentBatch][currentCourse][currentSem][roll]) {
         currentRoll = roll;
         closeRollModal();
         displayResult();
@@ -412,4 +409,4 @@
         newMarks.push(parseInt(marks));
       });
       
-      resultsDB[cu
+      resultsDB[c
