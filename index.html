@@ -3,120 +3,250 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SDMSMK - Student Login</title>
+  <title>SDMSMK - Student Dashboard</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f0f2f5;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
     }
-   .login-box {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-      max-width: 450px;
-      width: 100%;
-    }
-    h1 { text-align: center; color: #333; margin-bottom: 10px; font-size: 2rem; }
-   .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
-   .input-group { margin-bottom: 20px; }
-    label { display: block; color: #555; margin-bottom: 8px; font-weight: 600; }
-    input {
-      width: 100%;
-      padding: 15px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: all 0.3s;
-    }
-    input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-    button {
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+    
+ .navbar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s;
+      padding: 20px 40px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    
+ .navbar h1 { font-size: 1.8rem; }
+ .nav-right { display: flex; gap: 20px; align-items: center; }
+    #liveTime { font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; }
+ .profile-pic {
+      width: 45px; height: 45px; border-radius: 50%; background: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; cursor: pointer; transition: 0.3s;
     }
-    #error {
-      color: #f5576c;
-      text-align: center;
-      margin-top: 15px;
-      min-height: 20px;
-      font-weight: 600;
+ .profile-pic:hover { transform: scale(1.1); }
+    
+ .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+    
+ .welcome-banner {
+      background: white; padding: 30px; border-radius: 20px;
+      margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    @media (min-width: 1024px) {
-     .login-box { padding: 60px; max-width: 500px; }
-      h1 { font-size: 2.5rem; }
+ .welcome-banner h2 { color: #333; font-size: 2rem; margin-bottom: 10px; }
+ .welcome-banner p { color: #666; font-size: 1.1rem; }
+    
+ .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px; margin-bottom: 30px;
+    }
+    
+ .card {
+      background: white; border-radius: 20px; padding: 35px 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.3s;
+      cursor: pointer; position: relative; overflow: hidden;
+    }
+ .card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+ .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; }
+ .card-green::before { background: linear-gradient(90deg, #56ab2f, #a8e063); }
+ .card-blue::before { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+ .card-orange::before { background: linear-gradient(90deg, #fa709a, #fee140); }
+ .card-purple::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+    
+ .card-icon { font-size: 3.5rem; margin-bottom: 20px; }
+ .card h3 { color: #555; font-size: 1.2rem; margin-bottom: 15px; font-weight: 600; }
+ .card-value { font-size: 3rem; font-weight: 700; color: #333; margin-bottom: 15px; }
+ .card-status { font-size: 1rem; font-weight: 600; padding: 6px 15px; border-radius: 20px; display: inline-block; }
+ .status-safe { background: #d4edda; color: #155724; }
+ .status-warning { background: #fff3cd; color: #856404; }
+ .status-danger { background: #f8d7da; color: #721c24; }
+    
+ .progress-bar {
+      width: 100%; height: 10px; background: #e0e0e0;
+      border-radius: 10px; overflow: hidden; margin-top: 10px;
+    }
+ .progress-fill {
+      height: 100%; background: linear-gradient(90deg, #56ab2f, #a8e063);
+      transition: width 1s ease; border-radius: 10px;
+    }
+    
+ .quick-actions {
+      background: white; padding: 30px; border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+ .quick-actions h3 { color: #333; margin-bottom: 20px; font-size: 1.5rem; }
+ .action-buttons {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
+    }
+ .action-btn {
+      padding: 18px 25px; border: none; border-radius: 12px; font-size: 1.1rem;
+      font-weight: 600; cursor: pointer; transition: all 0.3s; color: white;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+ .btn-profile { background: linear-gradient(135deg, #667eea, #764ba2); }
+ .btn-attendance { background: linear-gradient(135deg, #f093fb, #f5576c); }
+ .btn-marks { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+ .btn-fees { background: linear-gradient(135deg, #fa709a, #fee140); }
+ .btn-settings { background: linear-gradient(135deg, #30cfd0, #330867); }
+ .btn-logout { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
+ .action-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    
+    @media (min-width: 1200px) {
+   .navbar { padding: 25px 60px; }
+   .navbar h1 { font-size: 2.2rem; }
+   .container { padding: 40px; }
+   .cards-grid { grid-template-columns: repeat(4, 1fr); }
+   .card { padding: 45px 35px; }
+   .card-value { font-size: 3.5rem; }
+    }
+    
+    @media (max-width: 768px) {
+   .navbar { padding: 15px 20px; }
+   .navbar h1 { font-size: 1.4rem; }
+   .cards-grid { grid-template-columns: 1fr; }
+   .welcome-banner h2 { font-size: 1.5rem; }
+     #liveTime { font-size: 0.85rem; padding: 6px 12px; }
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h1>🎓 SDMSMK</h1>
-    <p class="subtitle">Student Login Portal</p>
-    
-    <div class="input-group">
-      <label>Student ID / Roll No</label>
-      <input type="text" id="studentId" placeholder="22A91A0505" required>
+  <div class="navbar">
+    <h1>🎓 SDMSMK Student Portal</h1>
+    <div class="nav-right">
+      <span id="liveTime"></span>
+      <span id="studentName">Hi, Mangaveni</span>
+      <div class="profile-pic" onclick="checkPage('profile.html')">👤</div>
     </div>
-    
-    <div class="input-group">
-      <label>Password</label>
-      <input type="password" id="password" placeholder="Enter password" required>
+  </div>
+
+  <div class="container">
+    <div class="welcome-banner">
+      <h2>Welcome back, <span id="nameBanner">Mangaveni Pinninti</span>! 👋</h2>
+      <p>Roll No: <strong id="rollNo">22A91A0505</strong> | Branch: <strong>CSE</strong> | Sem: <strong>3-1</strong></p>
     </div>
-    
-    <button onclick="login()">Login</button>
-    <p id="error"></p>
+
+    <div class="cards-grid">
+      <div class="card card-green" onclick="checkPage('attendance.html')">
+        <div class="card-icon">📊</div>
+        <h3>Attendance</h3>
+        <div class="card-value" id="attendanceVal">85.5%</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="attProgress" style="width: 0%"></div>
+        </div>
+        <span class="card-status status-safe" id="attendanceStatus" style="margin-top: 10px;">You are Safe ✅</span>
+      </div>
+
+      <div class="card card-blue" onclick="checkPage('marks.html')">
+        <div class="card-icon">📚</div>
+        <h3>Total Courses</h3>
+        <div class="card-value">5</div>
+        <span class="card-status status-safe">Current Semester</span>
+      </div>
+
+      <div class="card card-orange" onclick="checkPage('fees.html')">
+        <div class="card-icon">💰</div>
+        <h3>Pending Fees</h3>
+        <div class="card-value" id="feesVal">₹0</div>
+        <span class="card-status status-safe" id="feesStatus">All Clear ✅</span>
+      </div>
+
+      <div class="card card-purple" onclick="checkPage('marks.html')">
+        <div class="card-icon">🎯</div>
+        <h3>CGPA</h3>
+        <div class="card-value">8.75</div>
+        <span class="card-status status-safe">Excellent</span>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <h3>⚡ Quick Actions</h3>
+      <div class="action-buttons">
+        <button class="action-btn btn-profile" onclick="checkPage('profile.html')">👤 My Profile</button>
+        <button class="action-btn btn-attendance" onclick="checkPage('attendance.html')">📊 View Attendance</button>
+        <button class="action-btn btn-marks" onclick="checkPage('marks.html')">📝 Check Results</button>
+        <button class="action-btn btn-fees" onclick="checkPage('fees.html')">💰 Fee Payment</button>
+        <button class="action-btn btn-settings" onclick="checkPage('settings.html')">⚙️ Settings</button>
+        <button class="action-btn btn-logout" onclick="logout()">🚪 Logout</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    function login() {
-      let id = document.getElementById('studentId').value.trim();
-      let pass = document.getElementById('password').value.trim();
-      let error = document.getElementById('error');
+    // Live Clock
+    function updateTime() {
+      let now = new Date();
+      let time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      let date = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      document.getElementById('liveTime').innerText = `🕐 ${date}, ${time}`;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+    
+    // Load Data
+    window.onload = function() {
+      let name = localStorage.getItem('studentName') || 'Mangaveni Pinninti';
+      let roll = localStorage.getItem('studentRoll') || '22A91A0505';
+      let attendance = parseFloat(localStorage.getItem('attendance')) || 85.5;
       
-      if(!id ||!pass) {
-        error.innerText = '❌ Please fill all fields';
-        return;
-      }
-      
-      // Demo login - Project ki elanti ID password petti login avthundi
-      // Future: Backend connect cheyali
-      localStorage.setItem('studentName', 'Mangaveni Pinninti');
-      localStorage.setItem('studentRoll', id);
-      localStorage.setItem('attendance', '85.5');
-      
-      error.innerText = '✅ Login Successful!';
-      error.style.color = 'green';
+      document.getElementById('studentName').innerText = 'Hi, ' + name.split(' ')[0];
+      document.getElementById('nameBanner').innerText = name;
+      document.getElementById('rollNo').innerText = roll;
+      document.getElementById('attendanceVal').innerText = attendance + '%';
       
       setTimeout(() => {
-        window.location.href = 'welcome.html';
-      }, 1000);
+        document.getElementById('attProgress').style.width = attendance + '%';
+      }, 300);
+      
+      let attStatus = document.getElementById('attendanceStatus');
+      let progressFill = document.getElementById('attProgress');
+      if(attendance < 75) {
+        attStatus.innerText = 'Warning - Shortage 🔴';
+        attStatus.className = 'card-status status-danger';
+        progressFill.style.background = 'linear-gradient(90deg, #ff6b6b, #ee5a6f)';
+      } else if(attendance < 85) {
+        attStatus.innerText = 'Maintain Carefully 🟡';
+        attStatus.className = 'card-status status-warning';
+        progressFill.style.background = 'linear-gradient(90deg, #fa709a, #fee140)';
+      }
     }
     
-    // Enter key support
-    document.getElementById('password').addEventListener('keypress', (e) => {
-      if(e.key === 'Enter') login();
-    });
+    // NEW: 404 RAKUNDA CHECK CHESE FUNCTION
+    function checkPage(page) {
+      // Page unda ledo test cheyi
+      fetch(page, { method: 'HEAD' })
+       .then(response => {
+          if (response.ok) {
+            window.location.href = page;
+          } else {
+            alert(`⚠️ ${page} inka create cheyalevu Mangaveni!\n\nGitHub lo Add file → Create new file → ${page} ani petti code paste cheyi.`);
+          }
+        })
+       .catch(() => {
+          alert(`⚠️ ${page} file kanipinchaledu!\n\nMunupu ee file create cheyi, taruvata button work avthundi.`);
+        });
+    }
+    
+    // FIX: Logout to index.html not login.html
+    function logout() {
+      if(confirm("Are you sure you want to logout?")) {
+        localStorage.clear();
+        window.location.href = 'index.html'; // index.html ki velthundi
+      }
+    }
+    
+    // Login Check
+    if(!localStorage.getItem('studentName')) {
+      alert('Please login first!');
+      window.location.href = 'index.html';
+    }
   </script>
 </body>
-</html>
+          </html>
