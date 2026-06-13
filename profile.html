@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - SDMSMK</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; }
+   .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
+   .navbar h1 { font-size: 1.8rem; }
+   .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+   .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+   .card h2 { color: #667eea; margin-bottom: 30px; font-size: 2rem; }
+   .info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+   .info-row span:first-child { font-weight: 600; color: #555; }
+   .info-row span:last-child { color: #333; }
+    .back-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
+      padding: 15px 30px; border-radius: 10px; font-size: 1.1rem; font-weight: 600;
+      cursor: pointer; margin-top: 30px; width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar"><h1>👤 My Profile</h1></div>
+  <div class="container">
+    <div class="card">
+      <h2>Student Details</h2>
+      <div class="info-row"><span>Name:</span><span id="pName">Mangaveni Pinninti</span></div>
+      <div class="info-row"><span>Roll No:</span><span id="pRoll">22A91A0505</span></div>
+      <div class="info-row"><span>Branch:</span><span>CSE</span></div>
+      <div class="info-row"><span>Semester:</span><span>3-1</span></div>
+      <div class="info-row"><span>Email:</span><span>mangaveni@sdmsmk.edu</span></div>
+      <div class="info-row"><span>Phone:</span><span>+91 9876543210</span></div>
+      <button class="back-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+    </div>
+  </div>
+  <script>
+    window.onload = () => {
+      document.getElementById('pName').innerText = localStorage.getItem('studentName') || 'Mangaveni Pinninti';
+      document.getElementById('pRoll').innerText = localStorage.getItem('studentRoll') || '22A91A0505';
+    }
+  </script>
+</body>
+</html>
