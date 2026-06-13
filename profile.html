@@ -7,36 +7,36 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; }
-  .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
-  .navbar h1 { font-size: 1.8rem; }
-  .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
-  .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-  .card h2 { color: #667eea; margin-bottom: 30px; font-size: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-  .edit-btn {
+ .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
+ .navbar h1 { font-size: 1.8rem; }
+ .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+ .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+ .card h2 { color: #667eea; margin-bottom: 30px; font-size: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+ .edit-btn {
       background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
       padding: 10px 20px; border-radius: 8px; font-size: 1rem; font-weight: 600;
       cursor: pointer; transition: 0.3s;
     }
-  .edit-btn:hover { transform: scale(1.05); }
-  .info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; gap: 15px; }
-  .info-row span:first-child { font-weight: 600; color: #555; min-width: 100px; }
-  .info-row span:last-child,.info-row input,.info-row select { color: #333; flex: 1; text-align: right; }
-  .info-row input,.info-row select {
+ .edit-btn:hover { transform: scale(1.05); }
+ .info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; gap: 15px; }
+ .info-row span:first-child { font-weight: 600; color: #555; min-width: 100px; }
+ .info-row span:last-child,.info-row input,.info-row select { color: #333; flex: 1; text-align: right; }
+ .info-row input,.info-row select {
       border: 2px solid #667eea; padding: 8px 12px; border-radius: 8px;
       font-size: 1rem; text-align: right; display: none;
     }
-  .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+ .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
    .back-btn,.save-btn {
       flex: 1; min-width: 200px; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem;
       font-weight: 600; cursor: pointer; border: none; transition: 0.3s;
     }
-  .back-btn { background: #6c757d; color: white; }
-  .save-btn {
+ .back-btn { background: #6c757d; color: white; }
+ .save-btn {
       background: linear-gradient(135deg, #56ab2f, #a8e063); color: white;
       display: none;
     }
-  .back-btn:hover,.save-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-  .success-msg {
+ .back-btn:hover,.save-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+ .success-msg {
       background: #d4edda; color: #155724; padding: 15px; border-radius: 10px;
       text-align: center; margin-bottom: 20px; display: none; font-weight: 600;
     }
@@ -63,109 +63,26 @@
         <input type="text" id="eRoll">
       </div>
       <div class="info-row">
-        <span>Branch:</span>
-        <span id="pBranch">CSE</span>
+        <span>Course:</span>
+        <span id="pBranch">B.Sc</span>
         <select id="eBranch">
-          <option value="CSE">CSE</option>
-          <option value="ECE">ECE</option>
-          <option value="EEE">EEE</option>
-          <option value="MECH">MECH</option>
-          <option value="CIVIL">CIVIL</option>
-          <option value="IT">IT</option>
+          <option value="B.Sc">B.Sc - Bachelor of Science</option>
+          <option value="B.Com">B.Com - Bachelor of Commerce</option>
+          <option value="B.A">B.A - Bachelor of Arts</option>
+          <option value="BBA">BBA - Bachelor of Business Admin</option>
+          <option value="BCA">BCA - Bachelor of Computer Apps</option>
         </select>
       </div>
       <div class="info-row">
-        <span>Semester:</span>
-        <span id="pSem">3-1</span>
+        <span>Year:</span>
+        <span id="pSem">1st Year</span>
         <select id="eSem">
-          <option value="1-1">1-1</option>
-          <option value="1-2">1-2</option>
-          <option value="2-1">2-1</option>
-          <option value="2-2">2-2</option>
-          <option value="3-1">3-1</option>
-          <option value="3-2">3-2</option>
-          <option value="4-1">4-1</option>
-          <option value="4-2">4-2</option>
+          <option value="1st Year">1st Year</option>
+          <option value="2nd Year">2nd Year</option>
+          <option value="3rd Year">3rd Year</option>
         </select>
       </div>
       <div class="info-row">
         <span>Email:</span>
         <span id="pEmail">-</span>
-        <input type="email" id="eEmail">
-      </div>
-      <div class="info-row">
-        <span>Phone:</span>
-        <span id="pPhone">-</span>
-        <input type="tel" id="ePhone" placeholder="+91 9876543210">
-      </div>
-      
-      <div class="btn-group">
-        <button class="back-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
-        <button class="save-btn" onclick="saveProfile()" id="saveBtn">💾 Save Changes</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    let isEditing = false;
-    
-    // Load Profile Data from localStorage
-    function loadProfile() {
-      document.getElementById('pName').innerText = localStorage.getItem('studentName') || '-';
-      document.getElementById('pRoll').innerText = localStorage.getItem('studentRoll') || '-';
-      document.getElementById('pBranch').innerText = localStorage.getItem('studentBranch') || 'CSE';
-      document.getElementById('pSem').innerText = localStorage.getItem('studentSem') || '3-1';
-      document.getElementById('pEmail').innerText = localStorage.getItem('studentEmail') || '-';
-      document.getElementById('pPhone').innerText = localStorage.getItem('studentPhone') || '-';
-    }
-    
-    // Toggle Edit Mode
-    function toggleEdit() {
-      isEditing =!isEditing;
-      const fields = ['Name', 'Roll', 'Branch', 'Sem', 'Email', 'Phone'];
-      
-      if(isEditing) {
-        // Edit mode ON - Inputs chupinchu
-        document.getElementById('editBtn').innerText = '❌ Cancel';
-        document.getElementById('saveBtn').style.display = 'block';
-        
-        fields.forEach(f => {
-          document.getElementById('p' + f).style.display = 'none';
-          document.getElementById('e' + f).style.display = 'block';
-          document.getElementById('e' + f).value = localStorage.getItem('student' + f) || '';
-        });
-      } else {
-        // Edit mode OFF - Text chupinchu
-        document.getElementById('editBtn').innerText = '✏️ Edit Profile';
-        document.getElementById('saveBtn').style.display = 'none';
-        
-        fields.forEach(f => {
-          document.getElementById('p' + f).style.display = 'block';
-          document.getElementById('e' + f).style.display = 'none';
-        });
-      }
-    }
-    
-    // Save Profile to localStorage
-    function saveProfile() {
-      localStorage.setItem('studentName', document.getElementById('eName').value);
-      localStorage.setItem('studentRoll', document.getElementById('eRoll').value);
-      localStorage.setItem('studentBranch', document.getElementById('eBranch').value);
-      localStorage.setItem('studentSem', document.getElementById('eSem').value);
-      localStorage.setItem('studentEmail', document.getElementById('eEmail').value);
-      localStorage.setItem('studentPhone', document.getElementById('ePhone').value);
-      
-      loadProfile();
-      toggleEdit();
-      
-      // Success message chupinchu
-      let msg = document.getElementById('successMsg');
-      msg.style.display = 'block';
-      setTimeout(() => { msg.style.display = 'none'; }, 3000);
-    }
-    
-    // Page load ayinappudu data load cheyi
-    window.onload = loadProfile;
-  </script>
-</body>
-          </html>
+        <input type="email" id="
