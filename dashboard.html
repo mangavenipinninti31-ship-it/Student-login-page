@@ -190,21 +190,27 @@
     setInterval(updateTime, 1000);
     updateTime();
     
-    // Load Data
-    window.onload = function() {
-      let name = localStorage.getItem('studentName') || 'Mangaveni Pinninti';
-      let roll = localStorage.getItem('studentRoll') || '22A91A0505';
+    // NEW: Load Data Function - Profile lo marchina ventane dashboard lo kuda update avthundi
+    function loadDashboardData() {
+      let name = localStorage.getItem('studentName') || 'Student';
+      let roll = localStorage.getItem('studentRoll') || '-';
+      let branch = localStorage.getItem('studentBranch') || 'CSE';
+      let sem = localStorage.getItem('studentSem') || '3-1';
       let attendance = parseFloat(localStorage.getItem('attendance')) || 85.5;
       
+      // Top Navbar
       document.getElementById('studentName').innerText = 'Hi, ' + name.split(' ')[0];
+      
+      // Welcome Banner - FIX: Idi kuda update avthundi ippudu
       document.getElementById('nameBanner').innerText = name;
       document.getElementById('rollNo').innerText = roll;
+      document.getElementById('branchSem').innerText = `Roll No: ${roll} | Branch: ${branch} | Sem: ${sem}`;
+      
+      // Attendance
       document.getElementById('attendanceVal').innerText = attendance + '%';
+      document.getElementById('attProgress').style.width = attendance + '%';
       
-      setTimeout(() => {
-        document.getElementById('attProgress').style.width = attendance + '%';
-      }, 300);
-      
+      // Auto Status Color
       let attStatus = document.getElementById('attendanceStatus');
       let progressFill = document.getElementById('attProgress');
       if(attendance < 75) {
@@ -218,27 +224,30 @@
       }
     }
     
-    // NEW: 404 RAKUNDA CHECK CHESE FUNCTION
+    // Page load ayinappudu + prathi 1 second ki data check cheyi
+    window.onload = loadDashboardData;
+    setInterval(loadDashboardData, 1000); // NEW: Auto refresh - Profile lo marchina ventane kanipisthundi
+    
+    // 404 RAKUNDA CHECK CHESE FUNCTION
     function checkPage(page) {
-      // Page unda ledo test cheyi
       fetch(page, { method: 'HEAD' })
-       .then(response => {
+      .then(response => {
           if (response.ok) {
             window.location.href = page;
           } else {
             alert(`⚠️ ${page} inka create cheyalevu Mangaveni!\n\nGitHub lo Add file → Create new file → ${page} ani petti code paste cheyi.`);
           }
         })
-       .catch(() => {
+      .catch(() => {
           alert(`⚠️ ${page} file kanipinchaledu!\n\nMunupu ee file create cheyi, taruvata button work avthundi.`);
         });
     }
     
-    // FIX: Logout to index.html not login.html
+    // FIX: Logout to index.html
     function logout() {
       if(confirm("Are you sure you want to logout?")) {
         localStorage.clear();
-        window.location.href = 'index.html'; // index.html ki velthundi
+        window.location.href = 'index.html';
       }
     }
     
