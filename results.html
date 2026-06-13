@@ -1,12 +1,342 @@
-let studentsDB = {
-  '244637S': {
-    name: 'Chekka Mangaveni',
-    year: '1st Year',
-    marks: [85, 78, 92, 88, 76, 95]
-  },
-  'NEE_ROLL': {
-    name: 'Nee Peru',
-    year: '1st Year',
-    marks: [70, 80, 75, 82, 78, 88] // Nee real marks
-  }
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results - SDMSMK</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; }
+  .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
+  .navbar h1 { font-size: 1.8rem; }
+  .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+  .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    
+    /* Semester List */
+  .page-title { color: #333; font-size: 2rem; margin-bottom: 25px; }
+  .sem-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  .sem-table th { background: #333; color: white; padding: 15px; text-align: left; font-weight: 600; }
+  .sem-table td { padding: 18px 15px; border-bottom: 1px solid #eee; }
+  .sem-table tr:hover { background: #f8f9fa; }
+  .click-btn {
+      background: #667eea; color: white; border: none; padding: 8px 20px;
+      border-radius: 6px; font-weight: 600; cursor: pointer;
+    }
+  .click-btn:hover { background: #5568d3; }
+    
+    /* Roll Input Popup */
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-content { background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; }
+  .modal-content h3 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
+  .modal-content input {
+      width: 100%; padding: 15px; border: 2px solid #667eea; border-radius: 10px;
+      font-size: 1.1rem; text-align: center; text-transform: uppercase; margin-bottom: 20px;
+    }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-btns button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+  .submit-btn { background: #667eea; color: white; }
+  .cancel-btn { background: #6c757d; color: white; }
+    
+    /* Results Display */
+    #resultSection { display: none; }
+  .student-info {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
+      padding: 20px; border-radius: 12px; margin-bottom: 25px;
+    }
+  .student-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
+  .student-info p { font-size: 1rem; opacity: 0.9; }
+    
+  .result-header { color: #667eea; margin-bottom: 20px; font-size: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+  .edit-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
+      padding: 10px 20px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
+    }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #f8f9fa; color: #667eea; font-weight: 700; }
+    td input {
+      width: 100%; padding: 8px; border: 2px solid #667eea; border-radius: 6px;
+      font-size: 1rem; text-align: center; display: none;
+    }
+  .total-row { background: #f0f2f5; font-weight: 700; font-size: 1.1rem; }
+  .total-row td { color: #667eea; }
+  .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+  .back-btn,.save-btn,.new-search-btn {
+      flex: 1; min-width: 200px; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem;
+      font-weight: 600; cursor: pointer; border: none;
+    }
+  .back-btn { background: #6c757d; color: white; }
+  .save-btn { background: linear-gradient(135deg, #56ab2f, #a8e063); color: white; display: none; }
+  .new-search-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+  .success-msg,.error-msg {
+      padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; display: none; font-weight: 600;
+    }
+  .success-msg { background: #d4edda; color: #155724; }
+  .error-msg { background: #f8d7da; color: #721c24; }
+  .grade-a { color: #28a745; font-weight: 700; }
+  .grade-b { color: #17a2b8; font-weight: 700; }
+  .grade-c { color: #ffc107; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="navbar"><h1>📝 B.Sc AI - Semester Results</h1></div>
+  <div class="container">
+    <div class="card">
+      
+      <!-- Semester List Page -->
+      <div id="semListSection">
+        <h2 class="page-title">Results</h2>
+        <table class="sem-table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-26 Batch Semester End Examinations Results</td>
+              <td><button class="click-btn" onclick="openRollModal('2025-26', 'Sem-1')">Click Here</button></td>
+            </tr>
+            <tr>
+              <td>2024-25 Batch Semester End Examinations Results</td>
+              <td><button class="click-btn" onclick="openRollModal('2024-25', 'Sem-3')">Click Here</button></td>
+            </tr>
+            <tr>
+              <td>2023-24 Batch Semester End Examinations Results</td>
+              <td><button class="click-btn" onclick="openRollModal('2023-24', 'Sem-5')">Click Here</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="back-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+      </div>
+      
+      <!-- Results Display -->
+      <div id="resultSection">
+        <div class="success-msg" id="successMsg">✅ Results Updated Successfully!</div>
+        <div class="error-msg" id="errorMsg">❌ Roll Number Not Found!</div>
+        
+        <div class="student-info">
+          <h3 id="studentNameDisplay">Student Name</h3>
+          <p>Roll No: <strong id="rollDisplay">-</strong> | Batch: <strong id="batchDisplay">-</strong> | Semester: <strong id="semDisplay">-</strong></p>
+        </div>
+        
+        <h2 class="result-header">
+          <span id="semTitle">Semester Results</span>
+          <button class="edit-btn" onclick="toggleEdit()" id="editBtn">✏️ Edit Marks</button>
+        </h2>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Marks</th>
+              <th>Grade</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td>Total / Percentage</td>
+              <td id="totalMarks">-</td>
+              <td id="totalGrade">-</td>
+            </tr>
+          </tfoot>
+        </table>
+        
+        <div class="btn-group">
+          <button class="back-btn" onclick="location.href='dashboard.html'">← Dashboard</button>
+          <button class="new-search-btn" onclick="newSearch()">🔍 New Search</button>
+          <button class="save-btn" onclick="saveResults()" id="saveBtn">💾 Save Results</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Roll Number Popup -->
+  <div class="modal" id="rollModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Enter Roll Number</h3>
+      <input type="text" id="rollInput" placeholder="Ex: 244637S" maxlength="10">
+      <div class="modal-btns">
+        <button class="cancel-btn" onclick="closeRollModal()">Cancel</button>
+        <button class="submit-btn" onclick="submitRoll()">Get Results</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEditing = false;
+    let currentRoll = '';
+    let currentBatch = '';
+    let currentSem = '';
+    
+    // B.Sc AI Subjects by Semester
+    let semSubjects = {
+      'Sem-1': ['Python Programming', 'Mathematics for AI', 'Statistics & Probability', 'Fundamentals of AI', 'English', 'Second Language'],
+      'Sem-3': ['Machine Learning', 'Data Structures', 'DBMS', 'Web Technologies', 'Environmental Science', 'Skill Course'],
+      'Sem-5': ['Deep Learning', 'Natural Language Processing', 'Cloud Computing', 'Big Data Analytics', 'Project Work', 'Elective']
+    };
+    
+    // Database - Batch + Roll wise results
+    let resultsDB = {
+      '2025-26': {
+        'Sem-1': {
+          '244637S': { name: 'Chekka Mangaveni', marks: [85, 78, 92, 88, 76, 95] },
+          '244638S': { name: 'Ravi Kumar', marks: [72, 81, 68, 75, 83, 79] }
+        }
+      },
+      '2024-25': {
+        'Sem-3': {
+          '234501S': { name: 'Priya Sharma', marks: [90, 88, 95, 92, 85, 91] },
+          '244637S': { name: 'Chekka Mangaveni', marks: [88, 82, 90, 85, 79, 87] }
+        }
+      },
+      '2023-24': {
+        'Sem-5': {
+          '224501S': { name: 'Arjun Reddy', marks: [95, 92, 88, 90, 94, 89] }
+        }
+      }
+    };
+    
+    function openRollModal(batch, sem) {
+      currentBatch = batch;
+      currentSem = sem;
+      document.getElementById('modalTitle').innerText = `${batch} - ${sem} Results`;
+      document.getElementById('rollModal').style.display = 'flex';
+      document.getElementById('rollInput').value = '';
+      document.getElementById('rollInput').focus();
+    }
+    
+    function closeRollModal() {
+      document.getElementById('rollModal').style.display = 'none';
+    }
+    
+    function submitRoll() {
+      let roll = document.getElementById('rollInput').value.trim().toUpperCase();
+      
+      if(!roll) {
+        alert('Please enter Roll Number!');
+        return;
+      }
+      
+      // Check if result exists
+      if(resultsDB[currentBatch] && resultsDB[currentBatch][currentSem] && resultsDB[currentBatch][currentSem][roll]) {
+        currentRoll = roll;
+        closeRollModal();
+        displayResult();
+      } else {
+        alert('❌ Roll Number Not Found in this Batch/Semester!');
+      }
+    }
+    
+    function displayResult() {
+      let student = resultsDB[currentBatch][currentSem][currentRoll];
+      let subjects = semSubjects[currentSem];
+      
+      document.getElementById('semListSection').style.display = 'none';
+      document.getElementById('resultSection').style.display = 'block';
+      
+      document.getElementById('studentNameDisplay').innerText = student.name;
+      document.getElementById('rollDisplay').innerText = currentRoll;
+      document.getElementById('batchDisplay').innerText = currentBatch;
+      document.getElementById('semDisplay').innerText = currentSem;
+      document.getElementById('semTitle').innerText = `${currentSem} Results`;
+      
+      loadResults(student.marks, subjects);
+    }
+    
+    function loadResults(marks, subjects) {
+      let tbody = document.getElementById('resultsBody');
+      tbody.innerHTML = '';
+      let total = 0;
+      
+      subjects.forEach((sub, i) => {
+        let mark = marks[i] || 0;
+        total += parseInt(mark);
+        let grade = getGrade(parseInt(mark));
+        
+        tbody.innerHTML += `
+          <tr>
+            <td>${sub}</td>
+            <td>
+              <span id="m${i}">${mark}</span>
+              <input type="number" id="e${i}" min="0" max="100" value="${mark}">
+            </td>
+            <td id="g${i}" class="${grade.class}">${grade.text}</td>
+          </tr>
+        `;
+      });
+      
+      let percent = (total / (subjects.length * 100) * 100).toFixed(2);
+      document.getElementById('totalMarks').innerText = `${total}/${subjects.length * 100} (${percent}%)`;
+      document.getElementById('totalGrade').innerText = getGrade(percent).text;
+      document.getElementById('totalGrade').className = getGrade(percent).class;
+    }
+    
+    function getGrade(marks) {
+      if(marks >= 90) return {text: 'A+', class: 'grade-a'};
+      if(marks >= 80) return {text: 'A', class: 'grade-a'};
+      if(marks >= 70) return {text: 'B+', class: 'grade-b'};
+      if(marks >= 60) return {text: 'B', class: 'grade-b'};
+      if(marks >= 50) return {text: 'C', class: 'grade-c'};
+      return {text: 'F', class: 'grade-c'};
+    }
+    
+    function toggleEdit() {
+      isEditing =!isEditing;
+      let subjects = semSubjects[currentSem];
+      
+      if(isEditing) {
+        document.getElementById('editBtn').innerText = '❌ Cancel';
+        document.getElementById('saveBtn').style.display = 'block';
+        
+        subjects.forEach((sub, i) => {
+          document.getElementById('m' + i).style.display = 'none';
+          document.getElementById('e' + i).style.display = 'block';
+        });
+      } else {
+        document.getElementById('editBtn').innerText = '✏️ Edit Marks';
+        document.getElementById('saveBtn').style.display = 'none';
+        
+        subjects.forEach((sub, i) => {
+          document.getElementById('m' + i).style.display = 'block';
+          document.getElementById('e' + i).style.display = 'none';
+        });
+      }
+    }
+    
+    function saveResults() {
+      let subjects = semSubjects[currentSem];
+      let newMarks = [];
+      subjects.forEach((sub, i) => {
+        let marks = document.getElementById('e' + i).value;
+        newMarks.push(parseInt(marks));
+      });
+      
+      resultsDB[currentBatch][currentSem][currentRoll].marks = newMarks;
+      
+      loadResults(newMarks, subjects);
+      toggleEdit();
+      
+      let msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 3000);
+    }
+    
+    function newSearch() {
+      document.getElementById('semListSection').style.display = 'block';
+      document.getElementById('resultSection').style.display = 'none';
+      currentRoll = '';
+      currentBatch = '';
+      currentSem = '';
+    }
+    
+    document.getElementById('rollInput').addEventListener('keypress', function(e) {
+      if(e.key === 'Enter') submitRoll();
+    });
+  </script>
+</body>
+  </html>
