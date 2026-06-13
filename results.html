@@ -7,48 +7,45 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; }
-  .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
-  .navbar h1 { font-size: 1.8rem; }
-  .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-  .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+ .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
+ .navbar h1 { font-size: 1.8rem; }
+ .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+ .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
     
-    /* Semester List */
-  .page-title { color: #333; font-size: 2rem; margin-bottom: 25px; }
-  .sem-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  .sem-table th { background: #333; color: white; padding: 15px; text-align: left; font-weight: 600; }
-  .sem-table td { padding: 18px 15px; border-bottom: 1px solid #eee; }
-  .sem-table tr:hover { background: #f8f9fa; }
-  .click-btn {
+ .page-title { color: #333; font-size: 2rem; margin-bottom: 25px; }
+ .sem-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+ .sem-table th { background: #333; color: white; padding: 15px; text-align: left; font-weight: 600; }
+ .sem-table td { padding: 18px 15px; border-bottom: 1px solid #eee; }
+ .sem-table tr:hover { background: #f8f9fa; }
+ .click-btn {
       background: #667eea; color: white; border: none; padding: 8px 20px;
       border-radius: 6px; font-weight: 600; cursor: pointer;
     }
-  .click-btn:hover { background: #5568d3; }
+ .click-btn:hover { background: #5568d3; }
     
-    /* Roll Input Popup */
-  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+ .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
       background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
-  .modal-content { background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; }
-  .modal-content h3 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
-  .modal-content input {
+ .modal-content { background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; }
+ .modal-content h3 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
+ .modal-content input {
       width: 100%; padding: 15px; border: 2px solid #667eea; border-radius: 10px;
       font-size: 1.1rem; text-align: center; text-transform: uppercase; margin-bottom: 20px;
     }
-  .modal-btns { display: flex; gap: 10px; }
-  .modal-btns button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
-  .submit-btn { background: #667eea; color: white; }
-  .cancel-btn { background: #6c757d; color: white; }
+ .modal-btns { display: flex; gap: 10px; }
+ .modal-btns button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+ .submit-btn { background: #667eea; color: white; }
+ .cancel-btn { background: #6c757d; color: white; }
     
-    /* Results Display */
     #resultSection { display: none; }
-  .student-info {
+ .student-info {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
       padding: 20px; border-radius: 12px; margin-bottom: 25px;
     }
-  .student-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
-  .student-info p { font-size: 1rem; opacity: 0.9; }
+ .student-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
+ .student-info p { font-size: 1rem; opacity: 0.9; }
     
-  .result-header { color: #667eea; margin-bottom: 20px; font-size: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-  .edit-btn {
+ .result-header { color: #667eea; margin-bottom: 20px; font-size: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+ .edit-btn {
       background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
       padding: 10px 20px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
     }
@@ -59,24 +56,24 @@
       width: 100%; padding: 8px; border: 2px solid #667eea; border-radius: 6px;
       font-size: 1rem; text-align: center; display: none;
     }
-  .total-row { background: #f0f2f5; font-weight: 700; font-size: 1.1rem; }
-  .total-row td { color: #667eea; }
-  .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
-  .back-btn,.save-btn,.new-search-btn {
+ .total-row { background: #f0f2f5; font-weight: 700; font-size: 1.1rem; }
+ .total-row td { color: #667eea; }
+ .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+ .back-btn,.save-btn,.new-search-btn {
       flex: 1; min-width: 200px; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem;
       font-weight: 600; cursor: pointer; border: none;
     }
-  .back-btn { background: #6c757d; color: white; }
-  .save-btn { background: linear-gradient(135deg, #56ab2f, #a8e063); color: white; display: none; }
-  .new-search-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-  .success-msg,.error-msg {
+ .back-btn { background: #6c757d; color: white; }
+ .save-btn { background: linear-gradient(135deg, #56ab2f, #a8e063); color: white; display: none; }
+ .new-search-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+ .success-msg,.error-msg {
       padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; display: none; font-weight: 600;
     }
-  .success-msg { background: #d4edda; color: #155724; }
-  .error-msg { background: #f8d7da; color: #721c24; }
-  .grade-a { color: #28a745; font-weight: 700; }
-  .grade-b { color: #17a2b8; font-weight: 700; }
-  .grade-c { color: #ffc107; font-weight: 700; }
+ .success-msg { background: #d4edda; color: #155724; }
+ .error-msg { background: #f8d7da; color: #721c24; }
+ .grade-a { color: #28a745; font-weight: 700; }
+ .grade-b { color: #17a2b8; font-weight: 700; }
+ .grade-c { color: #ffc107; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -84,7 +81,6 @@
   <div class="container">
     <div class="card">
       
-      <!-- Semester List Page -->
       <div id="semListSection">
         <h2 class="page-title">Results</h2>
         <table class="sem-table">
@@ -96,23 +92,18 @@
           </thead>
           <tbody>
             <tr>
-              <td>2025-26 Batch Semester End Examinations Results</td>
-              <td><button class="click-btn" onclick="openRollModal('2025-26', 'Sem-1')">Click Here</button></td>
+              <td>2024-25 Batch Semester-1 End Examinations Results</td>
+              <td><button class="click-btn" onclick="openRollModal('2024-25', 'Sem-1')">Click Here</button></td>
             </tr>
             <tr>
-              <td>2024-25 Batch Semester End Examinations Results</td>
-              <td><button class="click-btn" onclick="openRollModal('2024-25', 'Sem-3')">Click Here</button></td>
-            </tr>
-            <tr>
-              <td>2023-24 Batch Semester End Examinations Results</td>
-              <td><button class="click-btn" onclick="openRollModal('2023-24', 'Sem-5')">Click Here</button></td>
+              <td>2024-25 Batch Semester-2 End Examinations Results</td>
+              <td><button class="click-btn" onclick="openRollModal('2024-25', 'Sem-2')">Click Here</button></td>
             </tr>
           </tbody>
         </table>
         <button class="back-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
       </div>
       
-      <!-- Results Display -->
       <div id="resultSection">
         <div class="success-msg" id="successMsg">✅ Results Updated Successfully!</div>
         <div class="error-msg" id="errorMsg">❌ Roll Number Not Found!</div>
@@ -155,11 +146,10 @@
     </div>
   </div>
 
-  <!-- Roll Number Popup -->
   <div class="modal" id="rollModal">
     <div class="modal-content">
       <h3 id="modalTitle">Enter Roll Number</h3>
-      <input type="text" id="rollInput" placeholder="Ex: 244637S" maxlength="10">
+      <input type="text" id="rollInput" placeholder="Ex: 244657S" maxlength="10">
       <div class="modal-btns">
         <button class="cancel-btn" onclick="closeRollModal()">Cancel</button>
         <button class="submit-btn" onclick="submitRoll()">Get Results</button>
@@ -173,30 +163,19 @@
     let currentBatch = '';
     let currentSem = '';
     
-    // B.Sc AI Subjects by Semester
     let semSubjects = {
       'Sem-1': ['Python Programming', 'Mathematics for AI', 'Statistics & Probability', 'Fundamentals of AI', 'English', 'Second Language'],
-      'Sem-3': ['Machine Learning', 'Data Structures', 'DBMS', 'Web Technologies', 'Environmental Science', 'Skill Course'],
-      'Sem-5': ['Deep Learning', 'Natural Language Processing', 'Cloud Computing', 'Big Data Analytics', 'Project Work', 'Elective']
+      'Sem-2': ['Object Oriented Programming', 'Data Structures', 'Database Management Systems', 'Machine Learning Basics', 'Communication Skills', 'Environmental Studies']
     };
     
-    // Database - Batch + Roll wise results
+    // NEE ROLL NUMBER ADD CHESANU - Batch 2024-25, Sem 1 & 2
     let resultsDB = {
-      '2025-26': {
-        'Sem-1': {
-          '244637S': { name: 'Chekka Mangaveni', marks: [85, 78, 92, 88, 76, 95] },
-          '244638S': { name: 'Ravi Kumar', marks: [72, 81, 68, 75, 83, 79] }
-        }
-      },
       '2024-25': {
-        'Sem-3': {
-          '234501S': { name: 'Priya Sharma', marks: [90, 88, 95, 92, 85, 91] },
-          '244637S': { name: 'Chekka Mangaveni', marks: [88, 82, 90, 85, 79, 87] }
-        }
-      },
-      '2023-24': {
-        'Sem-5': {
-          '224501S': { name: 'Arjun Reddy', marks: [95, 92, 88, 90, 94, 89] }
+        'Sem-1': {
+          '244657S': { name: 'Mangaveni', marks: [88, 75, 82, 90, 79, 85] }
+        },
+        'Sem-2': {
+          '244657S': { name: 'Mangaveni', marks: [85, 80, 78, 88, 82, 76] }
         }
       }
     };
@@ -222,8 +201,7 @@
         return;
       }
       
-      // Check if result exists
-      if(resultsDB[currentBatch] && resultsDB[currentBatch][currentSem] && resultsDB[currentBatch][currentSem][roll]) {
+      if(resultsDB[currentBatch] && resultsDB[currentBatch][currentSem] && resultsDB[currentBatch][currentSem]) {
         currentRoll = roll;
         closeRollModal();
         displayResult();
@@ -339,4 +317,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
