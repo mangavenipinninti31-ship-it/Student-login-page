@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome - SDMSMK</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 25px;
+      padding: 50px 40px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      animation: slideUp 0.6s ease;
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    #title {
+      font-size: 2.8rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .name {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+    
+    #subtitle {
+      color: #666;
+      font-size: 1.2rem;
+      margin: 20px 0 30px;
+    }
+    
+    #rollNo {
+      background: #f0f0f0;
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 25px;
+      color: #555;
+      font-weight: 600;
+    }
+    
+    .magic-btn {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+      transition: all 0.3s;
+    }
+    
+    .magic-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(245, 87, 108, 0.6);
+    }
+    
+    .magic-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    #hearts {
+      font-size: 2.5rem;
+      margin-top: 25px;
+      min-height: 50px;
+      animation: bounce 0.6s infinite alternate;
+    }
+    
+    @keyframes bounce {
+      from { transform: scale(1); }
+      to { transform: scale(1.2); }
+    }
+    
+    .info-row {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .info-box {
+      background: #f8f9fa;
+      padding: 15px 25px;
+      border-radius: 15px;
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .info-box h4 {
+      color: #667eea;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .info-box p {
+      color: #333;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    
+    #timer {
+      color: #764ba2;
+      font-weight: 600;
+      margin-top: 15px;
+      font-size: 1.1rem;
+    }
+    
+    @media (min-width: 1024px) {
+      .card { padding: 70px 60px; max-width: 700px; }
+      #title { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="title">Hi <span class="name">Mangaveni</span> 💚</h1>
+    <p id="rollNo">Roll No: 22A91A0505</p>
+    <p id="subtitle">Nuvvu button nokkite magic jarugutundi</p>
+    
+    <div class="info-row">
+      <div class="info-box">
+        <h4>Last Login</h4>
+        <p id="lastLogin">Today</p>
+      </div>
+      <div class="info-box">
+        <h4>Status</h4>
+        <p style="color: green;">Active ✅</p>
+      </div>
+    </div>
+    
+    <button class="magic-btn" onclick="doMagic()" id="magicBtn">✨ Magic Button</button>
+    <div id="hearts"></div>
+    <p id="timer"></p>
+  </div>
+
+  <script>
+    // Feature 1: Get name from localStorage - Login nundi vastundi
+    window.onload = () => {
+      let studentName = localStorage.getItem('studentName') || 'Mangaveni';
+      document.querySelector('.name').innerText = studentName;
+      
+      // Feature 2: Show current time
+      let now = new Date().toLocaleTimeString();
+      document.getElementById('lastLogin').innerText = now;
+    }
+    
+    // Feature 3: Magic Button with Timer + Redirect
+    function doMagic() {
+      let btn = document.getElementById('magicBtn');
+      btn.disabled = true;
+      btn.innerText = 'Loading... ⏳';
+      
+      // Hearts animation
+      let hearts = ['❤️', '💚', '💙', '💜', '💛'];
+      let i = 0;
+      let heartInterval = setInterval(() => {
+        document.getElementById('hearts').innerHTML = hearts[i % 5].repeat(3);
+        i++;
+      }, 200);
+      
+      // Feature 4: Countdown timer
+      let count = 2;
+      let timer = setInterval(() => {
+        document.getElementById('timer').innerText = `Redirecting to Dashboard in ${count}s...`;
+        count--;
+        if(count < 0) {
+          clearInterval(timer);
+          clearInterval(heartInterval);
+          window.location.href = 'dashboard.html'; // Dashboard ki velthundi
+        }
+      }, 1000);
+    }
+    
+    // Feature 5: Prevent back button after login
+    history.pushState(null, null, location.href);
+    window.onpopstate = () => history.go(1);
+  </script>
+</body>
+</html>
