@@ -7,45 +7,57 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; }
- .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
- .navbar h1 { font-size: 1.8rem; }
- .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
- .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; }
+.navbar h1 { font-size: 1.8rem; }
+.container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+.card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
     
- .page-title { color: #333; font-size: 2rem; margin-bottom: 25px; }
- .sem-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
- .sem-table th { background: #333; color: white; padding: 15px; text-align: left; font-weight: 600; }
- .sem-table td { padding: 18px 15px; border-bottom: 1px solid #eee; }
- .sem-table tr:hover { background: #f8f9fa; }
- .click-btn {
+.page-title { color: #333; font-size: 2rem; margin-bottom: 25px; }
+    
+    /* Course Selection */
+.course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.course-card {
+      background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px;
+      border-radius: 15px; cursor: pointer; text-align: center; transition: 0.3s;
+    }
+.course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(102,126,234,0.3); }
+.course-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+.course-card p { opacity: 0.9; font-size: 0.95rem; }
+    
+    /* Semester List */
+.sem-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+.sem-table th { background: #333; color: white; padding: 15px; text-align: left; font-weight: 600; }
+.sem-table td { padding: 18px 15px; border-bottom: 1px solid #eee; }
+.sem-table tr:hover { background: #f8f9fa; }
+.click-btn {
       background: #667eea; color: white; border: none; padding: 8px 20px;
       border-radius: 6px; font-weight: 600; cursor: pointer;
     }
- .click-btn:hover { background: #5568d3; }
+.click-btn:hover { background: #5568d3; }
     
- .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
       background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
- .modal-content { background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; }
- .modal-content h3 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
- .modal-content input {
+.modal-content { background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; }
+.modal-content h3 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
+.modal-content input {
       width: 100%; padding: 15px; border: 2px solid #667eea; border-radius: 10px;
       font-size: 1.1rem; text-align: center; text-transform: uppercase; margin-bottom: 20px;
     }
- .modal-btns { display: flex; gap: 10px; }
- .modal-btns button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
- .submit-btn { background: #667eea; color: white; }
- .cancel-btn { background: #6c757d; color: white; }
+.modal-btns { display: flex; gap: 10px; }
+.modal-btns button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+.submit-btn { background: #667eea; color: white; }
+.cancel-btn { background: #6c757d; color: white; }
     
-    #resultSection { display: none; }
- .student-info {
+    #resultSection, #semListSection { display: none; }
+.student-info {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
       padding: 20px; border-radius: 12px; margin-bottom: 25px;
     }
- .student-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
- .student-info p { font-size: 1rem; opacity: 0.9; }
+.student-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
+.student-info p { font-size: 1rem; opacity: 0.9; }
     
- .result-header { color: #667eea; margin-bottom: 20px; font-size: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
- .edit-btn {
+.result-header { color: #667eea; margin-bottom: 20px; font-size: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+.edit-btn {
       background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;
       padding: 10px 20px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
     }
@@ -56,33 +68,73 @@
       width: 100%; padding: 8px; border: 2px solid #667eea; border-radius: 6px;
       font-size: 1rem; text-align: center; display: none;
     }
- .total-row { background: #f0f2f5; font-weight: 700; font-size: 1.1rem; }
- .total-row td { color: #667eea; }
- .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
- .back-btn,.save-btn,.new-search-btn {
+.total-row { background: #f0f2f5; font-weight: 700; font-size: 1.1rem; }
+.total-row td { color: #667eea; }
+.btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+.back-btn,.save-btn,.new-search-btn {
       flex: 1; min-width: 200px; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem;
       font-weight: 600; cursor: pointer; border: none;
     }
- .back-btn { background: #6c757d; color: white; }
- .save-btn { background: linear-gradient(135deg, #56ab2f, #a8e063); color: white; display: none; }
- .new-search-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
- .success-msg,.error-msg {
+.back-btn { background: #6c757d; color: white; }
+.save-btn { background: linear-gradient(135deg, #56ab2f, #a8e063); color: white; display: none; }
+.new-search-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.success-msg,.error-msg {
       padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; display: none; font-weight: 600;
     }
- .success-msg { background: #d4edda; color: #155724; }
- .error-msg { background: #f8d7da; color: #721c24; }
- .grade-a { color: #28a745; font-weight: 700; }
- .grade-b { color: #17a2b8; font-weight: 700; }
- .grade-c { color: #ffc107; font-weight: 700; }
+.success-msg { background: #d4edda; color: #155724; }
+.error-msg { background: #f8d7da; color: #721c24; }
+.grade-a { color: #28a745; font-weight: 700; }
+.grade-b { color: #17a2b8; font-weight: 700; }
+.grade-c { color: #ffc107; font-weight: 700; }
+.year-badge { background: #667eea; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; margin-left: 10px; }
+.breadcrumb { color: #667eea; margin-bottom: 20px; font-weight: 600; }
+.breadcrumb span { cursor: pointer; }
+.breadcrumb span:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-  <div class="navbar"><h1>📝 B.Sc AI - Semester Results</h1></div>
+  <div class="navbar"><h1>📝 SDMSMK - Degree Results Portal</h1></div>
   <div class="container">
     <div class="card">
       
+      <!-- Course Selection -->
+      <div id="courseSection">
+        <h2 class="page-title">Select Your Course</h2>
+        <div class="course-grid">
+          <div class="course-card" onclick="selectCourse('BSc-AI')">
+            <h3>🤖 B.Sc AI</h3>
+            <p>Artificial Intelligence</p>
+          </div>
+          <div class="course-card" onclick="selectCourse('BSc-Computers')">
+            <h3>💻 B.Sc Computers</h3>
+            <p>Computer Science</p>
+          </div>
+          <div class="course-card" onclick="selectCourse('BCom')">
+            <h3>💼 B.Com</h3>
+            <p>Commerce</p>
+          </div>
+          <div class="course-card" onclick="selectCourse('BBA')">
+            <h3>📊 BBA</h3>
+            <p>Business Administration</p>
+          </div>
+          <div class="course-card" onclick="selectCourse('BA')">
+            <h3>📚 BA</h3>
+            <p>Arts</p>
+          </div>
+          <div class="course-card" onclick="selectCourse('BSc-MPCs')">
+            <h3>🔬 B.Sc MPCs</h3>
+            <p>Maths, Physics, Computer Science</p>
+          </div>
+        </div>
+        <button class="back-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+      </div>
+      
+      <!-- Semester List -->
       <div id="semListSection">
-        <h2 class="page-title">Results</h2>
+        <div class="breadcrumb">
+          <span onclick="backToCourse()">Courses</span> > <span id="courseName"></span>
+        </div>
+        <h2 class="page-title">Select Semester</h2>
         <table class="sem-table">
           <thead>
             <tr>
@@ -90,27 +142,19 @@
               <th>Download</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>2024-25 Batch Semester-1 End Examinations Results</td>
-              <td><button class="click-btn" onclick="openRollModal('2024-25', 'Sem-1')">Click Here</button></td>
-            </tr>
-            <tr>
-              <td>2024-25 Batch Semester-2 End Examinations Results</td>
-              <td><button class="click-btn" onclick="openRollModal('2024-25', 'Sem-2')">Click Here</button></td>
-            </tr>
-          </tbody>
+          <tbody id="semTableBody"></tbody>
         </table>
-        <button class="back-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+        <button class="back-btn" onclick="backToCourse()">← Back to Courses</button>
       </div>
       
+      <!-- Results Display -->
       <div id="resultSection">
         <div class="success-msg" id="successMsg">✅ Results Updated Successfully!</div>
         <div class="error-msg" id="errorMsg">❌ Roll Number Not Found!</div>
         
         <div class="student-info">
           <h3 id="studentNameDisplay">Student Name</h3>
-          <p>Roll No: <strong id="rollDisplay">-</strong> | Batch: <strong id="batchDisplay">-</strong> | Semester: <strong id="semDisplay">-</strong></p>
+          <p>Roll No: <strong id="rollDisplay">-</strong> | Course: <strong id="courseDisplay">-</strong> | Batch: <strong id="batchDisplay">2024-25</strong> | Sem: <strong id="semDisplay">-</strong></p>
         </div>
         
         <h2 class="result-header">
@@ -160,30 +204,109 @@
   <script>
     let isEditing = false;
     let currentRoll = '';
-    let currentBatch = '';
+    let currentCourse = '';
+    let currentBatch = '2024-25';
     let currentSem = '';
     
-    let semSubjects = {
-      'Sem-1': ['Python Programming', 'Mathematics for AI', 'Statistics & Probability', 'Fundamentals of AI', 'English', 'Second Language'],
-      'Sem-2': ['Object Oriented Programming', 'Data Structures', 'Database Management Systems', 'Machine Learning Basics', 'Communication Skills', 'Environmental Studies']
+    // ALL COURSES SUBJECTS - 6 SEMESTERS
+    let courseSubjects = {
+      'BSc-AI': {
+        'Sem-1': ['Python Programming', 'Mathematics for AI', 'Statistics & Probability', 'Fundamentals of AI', 'English', 'Second Language'],
+        'Sem-2': ['OOP with Java', 'Data Structures', 'DBMS', 'ML Basics', 'Communication Skills', 'Environmental Studies'],
+        'Sem-3': ['Machine Learning', 'Data Mining', 'Computer Networks', 'Web Technologies', 'Skill Enhancement', 'Open Elective'],
+        'Sem-4': ['Deep Learning', 'NLP', 'Cloud Computing', 'Software Engineering', 'Quantitative Aptitude', 'Project-I'],
+        'Sem-5': ['Advanced DL', 'Computer Vision', 'Big Data Analytics', 'AI Ethics', 'Internship', 'Major Elective'],
+        'Sem-6': ['Reinforcement Learning', 'Generative AI', 'IoT & AI', 'Research Methodology', 'Project-II', 'Viva']
+      },
+      'BSc-Computers': {
+        'Sem-1': ['C Programming', 'Mathematics-I', 'Physics-I', 'Digital Logic', 'English', 'Second Language'],
+        'Sem-2': ['C++ Programming', 'Mathematics-II', 'Physics-II', 'Data Structures', 'Communication Skills', 'EVS'],
+        'Sem-3': ['Java Programming', 'Operating Systems', 'DBMS', 'Computer Networks', 'Skill Course', 'Elective'],
+        'Sem-4': ['Python', 'Web Technologies', 'Software Engineering', 'Computer Graphics', 'Quantitative Aptitude', 'Project-I'],
+        'Sem-5': ['Advanced Java', 'Cloud Computing', 'Cyber Security', 'Mobile Computing', 'Internship', 'Major Elective'],
+        'Sem-6': ['AI & ML', 'Data Science', 'IoT', 'Project-II', 'Research Methods', 'Viva']
+      },
+      'BCom': {
+        'Sem-1': ['Financial Accounting-I', 'Business Organization', 'Business Economics-I', 'Business Mathematics', 'English', 'Second Language'],
+        'Sem-2': ['Financial Accounting-II', 'Business Law', 'Business Economics-II', 'Business Statistics', 'Communication Skills', 'EVS'],
+        'Sem-3': ['Corporate Accounting', 'Income Tax', 'Banking Theory', 'Cost Accounting', 'Skill Course', 'Elective'],
+        'Sem-4': ['Advanced Accounting', 'GST', 'Auditing', 'Management Accounting', 'Quantitative Aptitude', 'Project-I'],
+        'Sem-5': ['Financial Management', 'Marketing Management', 'HRM', 'E-Commerce', 'Internship', 'Major Elective'],
+        'Sem-6': ['Business Analytics', 'International Business', 'Entrepreneurship', 'Project-II', 'Research Methods', 'Viva']
+      },
+      'BBA': {
+        'Sem-1': ['Principles of Management', 'Business Economics', 'Accounting-I', 'Business Mathematics', 'English', 'Second Language'],
+        'Sem-2': ['Organizational Behavior', 'Marketing Management', 'Accounting-II', 'Business Statistics', 'Communication Skills', 'EVS'],
+        'Sem-3': ['Financial Management', 'HRM', 'Production Management', 'Business Law', 'Skill Course', 'Elective'],
+        'Sem-4': ['Strategic Management', 'Operations Research', 'International Business', 'E-Business', 'Quantitative Aptitude', 'Project-I'],
+        'Sem-5': ['Business Analytics', 'Digital Marketing', 'Supply Chain Management', 'Entrepreneurship', 'Internship', 'Major Elective'],
+        'Sem-6': ['Corporate Governance', 'Project Management', 'Business Ethics', 'Project-II', 'Research Methods', 'Viva']
+      },
+      'BA': {
+        'Sem-1': ['English-I', 'Second Language-I', 'History-I', 'Economics-I', 'Political Science-I', 'EVS'],
+        'Sem-2': ['English-II', 'Second Language-II', 'History-II', 'Economics-II', 'Political Science-II', 'Communication Skills'],
+        'Sem-3': ['English-III', 'History-III', 'Economics-III', 'Political Science-III', 'Skill Course', 'Elective'],
+        'Sem-4': ['English-IV', 'History-IV', 'Economics-IV', 'Political Science-IV', 'Quantitative Aptitude', 'Project-I'],
+        'Sem-5': ['Public Administration', 'Sociology', 'Psychology', 'Journalism', 'Internship', 'Major Elective'],
+        'Sem-6': ['Research Methodology', 'Indian Constitution', 'Project-II', 'Dissertation', 'Soft Skills', 'Viva']
+      },
+      'BSc-MPCs': {
+        'Sem-1': ['Mathematics-I', 'Physics-I', 'Chemistry-I', 'Computer Science-I', 'English', 'Second Language'],
+        'Sem-2': ['Mathematics-II', 'Physics-II', 'Chemistry-II', 'Computer Science-II', 'Communication Skills', 'EVS'],
+        'Sem-3': ['Mathematics-III', 'Physics-III', 'Chemistry-III', 'Programming in C', 'Skill Course', 'Elective'],
+        'Sem-4': ['Mathematics-IV', 'Physics-IV', 'Chemistry-IV', 'Data Structures', 'Quantitative Aptitude', 'Project-I'],
+        'Sem-5': ['Numerical Methods', 'Electronics', 'Organic Chemistry', 'DBMS', 'Internship', 'Major Elective'],
+        'Sem-6': ['Operations Research', 'Quantum Physics', 'Analytical Chemistry', 'Project-II', 'Research Methods', 'Viva']
+      }
     };
     
-    // NEE ROLL NUMBER ADD CHESANU - Batch 2024-25, Sem 1 & 2
+    // SAMPLE DATABASE - Nee roll add chesa
     let resultsDB = {
       '2024-25': {
-        'Sem-1': {
-          '244657S': { name: 'Mangaveni', marks: [88, 75, 82, 90, 79, 85] }
-        },
-        'Sem-2': {
-          '244657S': { name: 'Mangaveni', marks: [85, 80, 78, 88, 82, 76] }
+        'BSc-AI': {
+          'Sem-1': { '244657S': { name: 'Mangaveni', marks: [88, 75, 82, 90, 79, 85] } },
+          'Sem-2': { '244657S': { name: 'Mangaveni', marks: [85, 80, 78, 88, 82, 76] } },
+          'Sem-3': { '244657S': { name: 'Mangaveni', marks: [0, 0, 0, 0, 0, 0] } },
+          'Sem-4': { '244657S': { name: 'Mangaveni', marks: [0, 0, 0, 0, 0, 0] } },
+          'Sem-5': { '244657S': { name: 'Mangaveni', marks: [0, 0, 0, 0, 0, 0] } },
+          'Sem-6': { '244657S': { name: 'Mangaveni', marks: [0, 0, 0, 0, 0, 0] } }
         }
       }
     };
     
+    function selectCourse(course) {
+      currentCourse = course;
+      document.getElementById('courseSection').style.display = 'none';
+      document.getElementById('semListSection').style.display = 'block';
+      document.getElementById('courseName').innerText = course.replace('-', ' ');
+      loadSemList();
+    }
+    
+    function loadSemList() {
+      let tbody = document.getElementById('semTableBody');
+      tbody.innerHTML = '';
+      let years = ['1st Year', '1st Year', '2nd Year', '2nd Year', '3rd Year', '3rd Year'];
+      
+      for(let i = 1; i <= 6; i++) {
+        tbody.innerHTML += `
+          <tr>
+            <td>${currentBatch} Batch Semester-${i} End Examinations Results <span class="year-badge">${years[i-1]}</span></td>
+            <td><button class="click-btn" onclick="openRollModal('${currentBatch}', 'Sem-${i}')">Click Here</button></td>
+          </tr>
+        `;
+      }
+    }
+    
+    function backToCourse() {
+      document.getElementById('semListSection').style.display = 'none';
+      document.getElementById('courseSection').style.display = 'block';
+      currentCourse = '';
+    }
+    
     function openRollModal(batch, sem) {
       currentBatch = batch;
       currentSem = sem;
-      document.getElementById('modalTitle').innerText = `${batch} - ${sem} Results`;
+      document.getElementById('modalTitle').innerText = `${currentCourse.replace('-', ' ')} - ${sem} Results`;
       document.getElementById('rollModal').style.display = 'flex';
       document.getElementById('rollInput').value = '';
       document.getElementById('rollInput').focus();
@@ -201,24 +324,25 @@
         return;
       }
       
-      if(resultsDB[currentBatch] && resultsDB[currentBatch][currentSem] && resultsDB[currentBatch][currentSem]) {
+      if(resultsDB[currentBatch] && resultsDB[currentBatch][currentCourse] && resultsDB[currentBatch][currentCourse][currentSem] && resultsDB[currentBatch][currentCourse][currentSem][roll]) {
         currentRoll = roll;
         closeRollModal();
         displayResult();
       } else {
-        alert('❌ Roll Number Not Found in this Batch/Semester!');
+        alert('❌ Roll Number Not Found in this Course/Semester!');
       }
     }
     
     function displayResult() {
-      let student = resultsDB[currentBatch][currentSem][currentRoll];
-      let subjects = semSubjects[currentSem];
+      let student = resultsDB[currentBatch][currentCourse][currentSem][currentRoll];
+      let subjects = courseSubjects[currentCourse][currentSem];
       
       document.getElementById('semListSection').style.display = 'none';
       document.getElementById('resultSection').style.display = 'block';
       
       document.getElementById('studentNameDisplay').innerText = student.name;
       document.getElementById('rollDisplay').innerText = currentRoll;
+      document.getElementById('courseDisplay').innerText = currentCourse.replace('-', ' ');
       document.getElementById('batchDisplay').innerText = currentBatch;
       document.getElementById('semDisplay').innerText = currentSem;
       document.getElementById('semTitle').innerText = `${currentSem} Results`;
@@ -265,7 +389,7 @@
     
     function toggleEdit() {
       isEditing =!isEditing;
-      let subjects = semSubjects[currentSem];
+      let subjects = courseSubjects[currentCourse][currentSem];
       
       if(isEditing) {
         document.getElementById('editBtn').innerText = '❌ Cancel';
@@ -287,34 +411,5 @@
     }
     
     function saveResults() {
-      let subjects = semSubjects[currentSem];
-      let newMarks = [];
-      subjects.forEach((sub, i) => {
-        let marks = document.getElementById('e' + i).value;
-        newMarks.push(parseInt(marks));
-      });
-      
-      resultsDB[currentBatch][currentSem][currentRoll].marks = newMarks;
-      
-      loadResults(newMarks, subjects);
-      toggleEdit();
-      
-      let msg = document.getElementById('successMsg');
-      msg.style.display = 'block';
-      setTimeout(() => { msg.style.display = 'none'; }, 3000);
-    }
-    
-    function newSearch() {
-      document.getElementById('semListSection').style.display = 'block';
-      document.getElementById('resultSection').style.display = 'none';
-      currentRoll = '';
-      currentBatch = '';
-      currentSem = '';
-    }
-    
-    document.getElementById('rollInput').addEventListener('keypress', function(e) {
-      if(e.key === 'Enter') submitRoll();
-    });
-  </script>
-</body>
-</html>
+      let subjects = courseSubjects[currentCourse][currentSem];
+      let newMar
