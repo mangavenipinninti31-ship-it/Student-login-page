@@ -3,257 +3,326 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mangaveni 💚 | Web Playground</title>
+  <title>Mangaveni 💚 | Web Playground Pro</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0d1117;
-      color: #c9d1d9;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+      font-family: 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9;
+      height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+    }
+   .navbar {
+      background: #161b22; padding: 10px 15px; display: flex;
+      justify-content: space-between; align-items: center; border-bottom: 1px solid #30363d;
+    }
+   .navbar h1 { font-size: 1.1rem; color: #58a6ff; }
+   .nav-buttons { display: flex; gap: 8px; }
+   .nav-btn {
+      background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
+      padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+    }
+   .nav-btn:hover { background: #30363d; }
+   .nav-btn.red { background: #da3633; border: none; color: white; }
+    
+   .toolbar {
+      background: #161b22; padding: 8px 15px; display: flex;
+      gap: 8px; border-bottom: 1px solid #30363d; flex-wrap: wrap;
+    }
+   .tool-btn {
+      background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
+      padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+    }
+   .tool-btn:hover { background: #30363d; }
+   .tool-btn.green { background: #238636; border: none; color: white; }
+    
+   .tabs {
+      background: #161b22; display: flex; gap: 0;
+      border-bottom: 1px solid #30363d; padding: 0 15px;
+    }
+   .tab {
+      padding: 10px 16px; cursor: pointer; color: #8b949e;
+      border-bottom: 2px solid transparent; font-weight: 600; font-size: 0.9rem;
+    }
+   .tab.active { color: #58a6ff; border-bottom: 2px solid #58a6ff; }
+    
+   .main-container { display: flex; flex: 1; overflow: hidden; }
+   .editor-panel { flex: 1; display: flex; flex-direction: column; border-right: 1px solid #30363d; }
+   .editor-panel.hide { display: none; }
+    
+   .editor-wrapper { position: relative; flex: 1; }
+   .line-numbers {
+      position: absolute; left: 0; top: 0; width: 40px; height: 100%;
+      background: #0d1117; color: #6e7681; padding: 15px 5px;
+      font-family: 'Consolas', monospace; font-size: 13px; line-height: 1.6;
+      text-align: right; user-select: none; border-right: 1px solid #21262d;
+    }
+   .editor {
+      flex: 1; background: #0d1117; color: #e6edf3; border: none;
+      padding: 15px 15px 15px 50px; font-family: 'Consolas', monospace;
+      font-size: 13px; resize: none; outline: none; line-height: 1.6; width: 100%; height: 100%;
     }
     
-    /* Navbar */
-    .navbar {
-      background: #161b22;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #30363d;
-    }
-    .navbar h1 {
-      font-size: 1.2rem;
-      color: #58a6ff;
-    }
-    .logout-btn {
-      background: #da3633;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-    }
+   .output-panel { flex: 1; display: flex; flex-direction: column; }
+   .output-panel.hide { display: none; }
+   .output-panel.full { flex: 1 1 100%; }
     
-    /* Tabs */
-    .tabs {
-      background: #161b22;
-      display: flex;
-      gap: 0;
-      border-bottom: 1px solid #30363d;
-      padding: 0 20px;
+   .output-header {
+      background: #161b22; padding: 8px 15px; border-bottom: 1px solid #30363d;
+      display: flex; justify-content: space-between; align-items: center;
+      color: #8b949e; font-size: 0.85rem;
     }
-    .tab {
-      padding: 12px 20px;
-      cursor: pointer;
-      color: #8b949e;
-      border-bottom: 2px solid transparent;
-      font-weight: 600;
+    #output { flex: 1; border: none; background: white; }
+    #console {
+      height: 100px; background: #0d1117; color: #f85149; border-top: 1px solid #30363d;
+      padding: 10px; font-family: monospace; font-size: 12px; overflow-y: auto; display: none;
     }
-    .tab.active {
-      color: #58a6ff;
-      border-bottom: 2px solid #58a6ff;
-    }
+    #console.show { display: block; }
     
-    /* Editor + Preview */
-    .container {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
-    .editor-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid #30363d;
-    }
-    .editor {
-      flex: 1;
-      background: #0d1117;
-      color: #c9d1d9;
-      border: none;
-      padding: 20px;
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      resize: none;
-      outline: none;
-      line-height: 1.6;
-    }
-    
-    /* Preview */
-    .preview-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .preview-header {
-      background: #161b22;
-      padding: 10px 20px;
-      border-bottom: 1px solid #30363d;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #8b949e;
-      font-size: 0.9rem;
-    }
-    .run-btn {
-      background: #238636;
-      color: white;
-      border: none;
-      padding: 6px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .run-btn:hover {
-      background: #2ea043;
-    }
-    #preview {
-      flex: 1;
-      border: none;
-      background: white;
-    }
-    
-    /* Hidden editors */
-    .editor-content { display: none; }
-    .editor-content.active { display: block; flex: 1; }
+   .editor-content { display: none; height: 100%; }
+   .editor-content.active { display: flex; flex-direction: column; }
   </style>
 </head>
 <body>
   <div class="navbar">
-    <h1>Mangaveni 💚 | Web Playground</h1>
-    <button class="logout-btn" onclick="location.href='dashboard.html'">Logout</button>
+    <h1>Mangaveni 💚 | Web Playground Pro</h1>
+    <div class="nav-buttons">
+      <button class="nav-btn" onclick="toggleView('editor')">📝 Editor</button>
+      <button class="nav-btn" onclick="toggleView('split')">⚡ Split</button>
+      <button class="nav-btn" onclick="toggleView('output')">📺 Output</button>
+      <button class="nav-btn red" onclick="location.href='dashboard.html'">Logout</button>
+    </div>
+  </div>
+  
+  <div class="toolbar">
+    <button class="tool-btn" onclick="formatCode()">✨ Format</button>
+    <button class="tool-btn" onclick="copyCode()">📋 Copy</button>
+    <button class="tool-btn" onclick="downloadCode()">⬇️ Download</button>
+    <button class="tool-btn" onclick="resetCode()">🔄 Reset</button>
+    <button class="tool-btn" onclick="toggleConsole()">🐛 Console</button>
+    <button class="tool-btn green" onclick="runCode()">▶ Run Code</button>
   </div>
   
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('html')">HTML</div>
-    <div class="tab" onclick="switchTab('css')">CSS</div>
-    <div class="tab" onclick="switchTab('js')">JS</div>
+    <div class="tab active" onclick="switchTab('html', this)">HTML</div>
+    <div class="tab" onclick="switchTab('css', this)">CSS</div>
+    <div class="tab" onclick="switchTab('js', this)">JS</div>
   </div>
   
-  <div class="container">
-    <div class="editor-section">
-      <textarea id="htmlEditor" class="editor editor-content active" spellcheck="false"><div class="card">
+  <div class="main-container">
+    <div class="editor-panel" id="editorPanel">
+      <div id="htmlEditor" class="editor-content active">
+        <div class="editor-wrapper">
+          <div class="line-numbers" id="htmlLines">1</div>
+          <textarea class="editor" id="html" spellcheck="false"><div class="card">
   <h1 id="title">Hi <span class="name">Mangaveni</span> 💚</h1>
   <p id="subtitle">Nuvvu button nokkite magic jarugutundi</p>
   <button onclick="doMagic()">✨ Magic Button</button>
   <div id="hearts"></div>
 </div></textarea>
+        </div>
+      </div>
       
-      <textarea id="cssEditor" class="editor editor-content" spellcheck="false">body {
+      <div id="cssEditor" class="editor-content">
+        <div class="editor-wrapper">
+          <div class="line-numbers" id="cssLines">1</div>
+          <textarea class="editor" id="css" spellcheck="false">body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #667eea, #764ba2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
+  display: flex; justify-content: center; align-items: center;
+  min-height: 100vh; margin: 0;
 }
 .card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  background: white; padding: 40px; border-radius: 20px;
+  text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  position: relative;
 }
 .name {
   background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   font-weight: 700;
 }
 button {
   background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  padding: 15px 35px;
-  border-radius: 50px;
-  font-size: 1.1rem;
-  cursor: pointer;
+  color: white; border: none; padding: 15px 35px;
+  border-radius: 50px; font-size: 1.1rem; cursor: pointer; margin-top: 20px;
 }
-.heart {
-  position: absolute;
-  animation: floatUp 2s ease-out forwards;
-}
+button:hover { transform: scale(1.05); }
+#hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.heart { position: absolute; font-size: 24px; animation: floatUp 2s ease-out forwards; }
 @keyframes floatUp {
-  100% { opacity: 0; transform: translateY(-200px); }
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-200px) rotate(20deg); }
 }</textarea>
+        </div>
+      </div>
       
-      <textarea id="jsEditor" class="editor editor-content" spellcheck="false">function doMagic() {
+      <div id="jsEditor" class="editor-content">
+        <div class="editor-wrapper">
+          <div class="line-numbers" id="jsLines">1</div>
+          <textarea class="editor" id="js" spellcheck="false">function doMagic() {
   document.getElementById('title').innerHTML = 'Wow Mangaveni 💚';
-  document.getElementById('subtitle').innerHTML = 'Magic chusava?';
+  document.getElementById('subtitle').innerHTML = 'Magic chusava? Inko sari nokku!';
   
   let hearts = document.getElementById('hearts');
-  for(let i = 0; i < 10; i++) {
-    let heart = document.createElement('div');
-    heart.className = 'heart';
-    heart.innerHTML = '💚';
-    heart.style.left = Math.random() * 100 + '%';
-    hearts.appendChild(heart);
-    setTimeout(() => heart.remove(), 2000);
+  let colors = ['💚', '💜', '💖', '💙', '✨'];
+  
+  for(let i = 0; i < 15; i++) {
+    setTimeout(() => {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.top = '80%';
+      hearts.appendChild(heart);
+      setTimeout(() => heart.remove(), 2000);
+    }, i * 80);
   }
+  console.log('Magic button clicked! 💚');
 }</textarea>
+        </div>
+      </div>
     </div>
     
-    <div class="preview-section">
-      <div class="preview-header">
+    <div class="output-panel" id="outputPanel">
+      <div class="output-header">
         <span>📺 Live Output - Auto Saved 💚</span>
-        <button class="run-btn" onclick="runCode()">▶ Run</button>
+        <span id="status">Ready</span>
       </div>
-      <iframe id="preview"></iframe>
+      <iframe id="output"></iframe>
+      <div id="console"></div>
     </div>
   </div>
 
   <script>
     let currentTab = 'html';
+    let defaultCode = {
+      html: document.getElementById('html').value,
+      css: document.getElementById('css').value,
+      js: document.getElementById('js').value
+    };
     
-    function switchTab(tab) {
+    // Line Numbers
+    function updateLineNumbers(id) {
+      let textarea = document.getElementById(id);
+      let lines = textarea.value.split('\n').length;
+      document.getElementById(id + 'Lines').innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
+    }
+    
+    ['html', 'css', 'js'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => updateLineNumbers(id));
+      updateLineNumbers(id);
+    });
+    
+    function switchTab(tab, el) {
       currentTab = tab;
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.editor-content').forEach(e => e.classList.remove('active'));
-      
-      event.target.classList.add('active');
+      el.classList.add('active');
       document.getElementById(tab + 'Editor').classList.add('active');
     }
     
     function runCode() {
-      let html = document.getElementById('htmlEditor').value;
-      let css = document.getElementById('cssEditor').value;
-      let js = document.getElementById('jsEditor').value;
+      document.getElementById('status').textContent = 'Running...';
+      let html = document.getElementById('html').value;
+      let css = document.getElementById('css').value;
+      let js = document.getElementById('js').value;
       
-      let code = `
-        <!DOCTYPE html>
-        <html>
-        <head><style>${css}</style></head>
-        <body>${html}<script>${js}<\/script></body>
-        </html>
+      // Console capture
+      let consoleCode = `
+        <script>
+          const oldLog = console.log;
+          console.log = function(...args) {
+            parent.postMessage({type: 'log', data: args.join(' ')}, '*');
+            oldLog.apply(console, args);
+          };
+          window.onerror = function(msg, url, line) {
+            parent.postMessage({type: 'error', data: msg + ' at line ' + line}, '*');
+          };
+        <\/script>
       `;
       
-      let preview = document.getElementById('preview');
-      preview.srcdoc = code;
+      let code = `<!DOCTYPE html><html><head><style>${css}</style></head><body>${html}${consoleCode}<script>${js}<\/script></body></html>`;
+      document.getElementById('output').srcdoc = code;
+      setTimeout(() => document.getElementById('status').textContent = 'Ready 💚', 500);
     }
     
-    // Auto run on load
-    runCode();
+    // Console Messages
+    window.addEventListener('message', e => {
+      if(e.data.type === 'log' || e.data.type === 'error') {
+        let console = document.getElementById('console');
+        console.innerHTML += e.data.data + '<br>';
+        console.scrollTop = console.scrollHeight;
+      }
+    });
     
-    // Auto save to localStorage
+    function toggleConsole() {
+      document.getElementById('console').classList.toggle('show');
+    }
+    
+    function formatCode() {
+      alert('Format feature: Beautify JS library add chesthe full work avthundi 💚');
+    }
+    
+    function copyCode() {
+      let code = document.getElementById(currentTab).value;
+      navigator.clipboard.writeText(code);
+      document.getElementById('status').textContent = 'Copied! ✅';
+      setTimeout(() => document.getElementById('status').textContent = 'Ready 💚', 1500);
+    }
+    
+    function downloadCode() {
+      let code = document.getElementById(currentTab).value;
+      let blob = new Blob([code], {type: 'text/plain'});
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `mangaveni.${currentTab}`;
+      a.click();
+    }
+    
+    function resetCode() {
+      if(confirm('Reset to default code?')) {
+        document.getElementById('html').value = defaultCode.html;
+        document.getElementById('css').value = defaultCode.css;
+        document.getElementById('js').value = defaultCode.js;
+        ['html', 'css', 'js'].forEach(updateLineNumbers);
+        runCode();
+      }
+    }
+    
+    function toggleView(mode) {
+      let editor = document.getElementById('editorPanel');
+      let output = document.getElementById('outputPanel');
+      editor.className = 'editor-panel';
+      output.className = 'output-panel';
+      
+      if(mode === 'editor') { output.classList.add('hide'); }
+      else if(mode === 'output') { editor.classList.add('hide'); output.classList.add('full'); }
+    }
+    
+    // Auto Save + Auto Run
     setInterval(() => {
-      localStorage.setItem('html', document.getElementById('htmlEditor').value);
-      localStorage.setItem('css', document.getElementById('cssEditor').value);
-      localStorage.setItem('js', document.getElementById('jsEditor').value);
+      localStorage.setItem('pg_html', document.getElementById('html').value);
+      localStorage.setItem('pg_css', document.getElementById('css').value);
+      localStorage.setItem('pg_js', document.getElementById('js').value);
     }, 2000);
+    
+    // Live typing = auto run with debounce
+    let timeout;
+    ['html', 'css', 'js'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(runCode, 800);
+      });
+    });
     
     // Load saved code
     window.onload = () => {
-      if(localStorage.getItem('html')) {
-        document.getElementById('htmlEditor').value = localStorage.getItem('html');
-        document.getElementById('cssEditor').value = localStorage.getItem('css');
-        document.getElementById('jsEditor').value = localStorage.getItem('js');
-        runCode();
+      if(localStorage.getItem('pg_html')) {
+        document.getElementById('html').value = localStorage.getItem('pg_html');
+        document.getElementById('css').value = localStorage.getItem('pg_css');
+        document.getElementById('js').value = localStorage.getItem('pg_js');
+        ['html', 'css', 'js'].forEach(updateLineNumbers);
       }
+      runCode();
     }
   </script>
 </body>
